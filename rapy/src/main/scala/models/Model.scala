@@ -5,15 +5,15 @@ trait ModelCompanion[M <: Model[M]] {
 
   private[models] def apply(jsonValue: JValue): M
 
-  // private def compareKeys(id1: Int, id2: Int): Boolean = {
-  //   val res = id1 == id2;
-  //   res
-  // }
+  def existAttr(m: M): Bool = m.toString()
+
   def all: List[M] = dbTable.instances.values.toList
 
-  def find(id: Int): Option[M] = ??? /*dbTable.instances.get(id)*/
+  def find(id: Int): Option[M] = dbTable.instances.get(id)
 
-  def exists(attr: String, value: Any): Boolean = ???
+  def exists(attr: String, value: Any): Boolean = {
+    dbTable.instances.values.exists(x => x.toMap.get(attr) == Some(value)) 
+  }
 
   def delete(id: Int): Unit = { ??? }
 
