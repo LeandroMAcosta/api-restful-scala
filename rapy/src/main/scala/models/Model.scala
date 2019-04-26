@@ -5,19 +5,18 @@ trait ModelCompanion[M <: Model[M]] {
 
   private[models] def apply(jsonValue: JValue): M
 
-  def existAttr(m: M): Bool = m.toString()
+  private def instances: Iterable[M] = dbTable.instances.values
 
-  def all: List[M] = dbTable.instances.values.toList
+  def all: List[M] = instances.toList
 
   def find(id: Int): Option[M] = dbTable.instances.get(id)
 
-  def exists(attr: String, value: Any): Boolean = {
-    dbTable.instances.values.exists(x => x.toMap.get(attr) == Some(value)) 
-  }
+  def exists(attr: String, value: Any): Boolean = 
+    instances.exists(x => x.toMap.get(attr) == Some(value))
 
-  def delete(id: Int): Unit = { ??? }
+  def delete(id: Int): Unit = dbTable.delete(id)
 
-  def filter(mapOfAttributes: Map[String, Any]): List[M] = ??? /*dbTable.instances.filterKeys()*/
+  def filter(mapOfAttributes: Map[String, Any]): List[M] = ???
 }
 
 trait Model[M <: Model[M]] { self: M =>
