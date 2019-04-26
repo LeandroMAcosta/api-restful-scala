@@ -9,7 +9,7 @@ object RestfulAPIServer extends MainRoutes  {
 
   @get("/")
   def root(): Response = {
-    JSONResponse("Ok")
+    JSONResponse("asdasd")
   }
 
   @get("/api/locations")

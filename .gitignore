@@ -89,3 +89,8 @@ project/plugins/project/
 rapy/db/*.json
 rapy/testdb/
 !rapy/db/locations.json
+
+
+#-------
+*.bloop/
+*.metals/
