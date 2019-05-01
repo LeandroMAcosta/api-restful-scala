@@ -16,7 +16,11 @@ trait ModelCompanion[M <: Model[M]] {
 
   def delete(id: Int): Unit = dbTable.delete(id)
 
-  def filter(mapOfAttributes: Map[String, Any]): List[M] = ???
+  def filter(mapOfAttributes: Map[String, Any]): List[M] =
+    all.filter(
+      obj => mapOfAttributes.forall(attr => obj.toMap.get(attr._1) == attr._2)
+    )
+
 }
 
 trait Model[M <: Model[M]] { self: M =>
