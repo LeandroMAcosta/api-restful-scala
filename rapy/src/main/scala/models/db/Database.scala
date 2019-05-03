@@ -14,9 +14,11 @@ import models._
 object Database {
   var baseDir: String = "db"
   private[models] val locations = new DatabaseTable[Location]("locations.json")
+  private[models] val users = new DatabaseTable[User]("users.json")
 
   private val databases = List(
     (locations, Location),
+    (users, User),
   )
 
   private def loadDatabaseTable(file: String): Try[List[JValue]] = Try {

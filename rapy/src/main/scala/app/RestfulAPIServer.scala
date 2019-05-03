@@ -2,6 +2,7 @@ package app
 
 import cask._
 import models._
+import scala.collection.script.Location
 
 object RestfulAPIServer extends MainRoutes  {
   override def host: String = "0.0.0.0"
@@ -14,6 +15,14 @@ object RestfulAPIServer extends MainRoutes  {
     
     println("Filtrado: ")
     Location.filter(Map("coordX" -> 10)).foreach(println)
+    
+    // println("\nFuera del if")
+    // if (Location.exists("name", "leandro")) {
+    //   println("Dentro del if")
+    // } else {
+    //   println("Afuera if")
+    // }
+    
     JSONResponse("asdasd", 200)
   }
 
