@@ -35,8 +35,13 @@ object RestfulAPIServer extends MainRoutes  {
   }
 
   @get("/api/providers")
-  def providers(): Response = {
-    JSONResponse(Provider.all.map(provider => provider.toMap))
+  def providers(locationName: String): Response = {
+    val locationInstance = Location.findByAttribute("name", locationName) match {
+      case Some(s) => s
+      case _ => return JSONResponse("Non existing location", 409)
+    }
+    val locationId = locationInstance.getId()
+    JSONResponse(Provider.filter(Map("locationId" -> locationId)).map(provider => provider.toMap))
   }
 
   @postJson("/api/providers")
@@ -48,7 +53,7 @@ object RestfulAPIServer extends MainRoutes  {
     
     val locationInstance = Location.findByAttribute("name", location) match {
       case Some(s) => s
-      case _ => return JSONResponse("Not existing location", 409)
+      case _ => return JSONResponse("Non existing location", 409)
     }
     
     val locationId = locationInstance.getId()
@@ -58,21 +63,28 @@ object RestfulAPIServer extends MainRoutes  {
   }
 
 
-  // @get("/api/consumers")
-  // def consumers(): Response = {
-  //   JSONResponse(Consumer.all.map(consumer => consumer.toMap))
-  // }
+  @get("/api/consumers")
+  def consumers(): Response = {
+    JSONResponse(Consumer.all.map(consumer => consumer.toMap))
+  }
 
-  // @postJson("/api/consumers")
-  // def consumers(username: String, location: String): Response = {
-  //   if (User.exists("username", username)) {
-  //     return JSONResponse("Existing username", 409)
-  //   }
+  @postJson("/api/consumers")
+  def consumers(username: String, location: String): Response = {
+    if (User.exists("username", username)) {
+      return JSONResponse("Existing username", 409)
+    }
 
-  //   val consumer = Consumer(username, location, "consumer")
-  //   consumer.save()
-  //   JSONResponse(consumer.id)
-  // }
+    val locationInstance = Location.findByAttribute("name", location) match {
+      case Some(s) => s
+      case _ => return JSONResponse("Not existing location", 409)
+    }
+    
+    val locationId = locationInstance.getId()
+
+    val consumer = Consumer(username, locationId, "consumer")
+    consumer.save()
+    JSONResponse(consumer.id)
+  }
 
   override def main(args: Array[String]): Unit = {
     System.err.println("\n " + "=" * 39)
