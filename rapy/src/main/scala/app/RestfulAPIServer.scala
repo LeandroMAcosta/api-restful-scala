@@ -36,20 +36,43 @@ object RestfulAPIServer extends MainRoutes  {
 
   @get("/api/providers")
   def providers(): Response = {
-    JSONResponse(Provider.all.map(location => location.toMap))
+    JSONResponse(Provider.all.map(provider => provider.toMap))
   }
 
   @postJson("/api/providers")
   def providers(username: String, storeName: String, 
                 location: String, maxDeliveryDistance: Int): Response = {
-    if (Provider.exists("username", username)) {
+    if (User.exists("username", username)) {
       return JSONResponse("Existing username", 409)
     }
-
-    val provider = Provider(username, storeName, location, maxDeliveryDistance)
+    
+    val locationInstance = Location.findByAttribute("name", location) match {
+      case Some(s) => s
+      case _ => return JSONResponse("Not existing location", 409)
+    }
+    
+    val locationId = locationInstance.getId()
+    val provider = Provider(username, storeName, locationId, maxDeliveryDistance, "provider")
     provider.save()
     JSONResponse(provider.id)
   }
+
+
+  // @get("/api/consumers")
+  // def consumers(): Response = {
+  //   JSONResponse(Consumer.all.map(consumer => consumer.toMap))
+  // }
+
+  // @postJson("/api/consumers")
+  // def consumers(username: String, location: String): Response = {
+  //   if (User.exists("username", username)) {
+  //     return JSONResponse("Existing username", 409)
+  //   }
+
+  //   val consumer = Consumer(username, location, "consumer")
+  //   consumer.save()
+  //   JSONResponse(consumer.id)
+  // }
 
   override def main(args: Array[String]): Unit = {
     System.err.println("\n " + "=" * 39)
