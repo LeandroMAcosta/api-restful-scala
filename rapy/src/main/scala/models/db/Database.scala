@@ -15,10 +15,12 @@ object Database {
   var baseDir: String = "db"
   private[models] val locations = new DatabaseTable[Location]("locations.json")
   private[models] val users = new DatabaseTable[User]("users.json")
+  private[models] val orders = new DatabaseTable[Orders]("orders.json") 
   
   private val databases = List(
     (locations, Location),
     (users, User),
+    (orders, Orders),
   )
 
   private def loadDatabaseTable(file: String): Try[List[JValue]] = Try {
