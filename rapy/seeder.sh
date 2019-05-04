@@ -7,3 +7,6 @@ http localhost:4000/api/providers/ username="lapeti2" storeName="local de guemes
 http localhost:4000/api/providers/ username="lapeti3" storeName="nombre xdd" location="nueva cordoba" maxDeliveryDistance:=1000
 
 http localhost:4000/api/consumers username="consumidor" location="guemes" 
+http localhost:4000/api/consumers username="consumidor1" location="guemes" 
+http localhost:4000/api/consumers username="consumidor2" location="guemes" 
+http localhost:4000/api/consumers username="consumidor3" location="nueva cordoba" 

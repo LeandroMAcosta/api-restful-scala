@@ -43,13 +43,6 @@ trait Model[M <: Model[M]] { self: M =>
 
   def toMap: Map[String, Any] = Map("id" -> _id)
 
-  def getId(): Int = {
-    toMap.get("id") match {
-      case Some(s:Int) => s
-      case _ => -1 
-    }
-  }
-
   def save(): Unit = {
     if (_id == 0) { _id = dbTable.getNextId }
     dbTable.save(this)
