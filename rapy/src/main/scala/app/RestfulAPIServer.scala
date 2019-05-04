@@ -34,75 +34,6 @@ object RestfulAPIServer extends MainRoutes  {
     JSONResponse(location.id)
   }
 
-  @get("/api/providers")
-  def providers(locationName: String): Response = {
-    val locationInstance = Location.findByAttribute("name", locationName) match {
-      case Some(s) => s
-      case _ => return JSONResponse("non existing location", 404)
-    }
-    val locationId = locationInstance.id
-    JSONResponse(Provider.filter(Map("locationId" -> locationId)).map(provider => provider.toMap))
-  }
-
-  @postJson("/api/providers")
-  def providers(username: String, storeName: String, 
-                location: String, maxDeliveryDistance: Int): Response = {
-    if (User.exists("username", username)) {
-      return JSONResponse("existing username", 409)
-    }
-    
-    val locationInstance = Location.findByAttribute("name", location) match {
-      case Some(s) => s
-      case _ => return JSONResponse("non existing location", 409)
-    }
-    
-    val locationId = locationInstance.id
-    val provider = Provider(username, storeName, locationId, maxDeliveryDistance, "provider")
-    provider.save()
-    JSONResponse(provider.id)
-  }
-
-  @get("/api/items")
-  def items(providerUsername: String): Response = {
-    if (! Provider.exists("username", providerUsername)){
-      return JSONResponse("non existing provider", 404)
-    }
-
-    val provider = Provider.findByAttribute("username", providerUsername) match {
-      case Some(id) => id
-      case _ => return JSONResponse("non existing provider", 404)
-    }
-
-    val itemsList = Items.filter(Map("providerId" -> provider.id))
-    JSONResponse(itemsList.map(item => item.toMap))
-  }
-
-  @postJson("/api/items")
-  def items(name: String, description: String, price: Float, providerUsername: String): Response = {
-    val providerId = Provider.findByAttribute("username", providerUsername) match {
-      case Some(id) => id.getId()
-      case _ => return JSONResponse("non existing provider", 404)
-    }
-
-    if (Items.exists("name", name)) {
-      return JSONResponse("existing item for provider", 409)
-    }
-    val item = Items(name, price, description, providerId)
-    item.save()
-    JSONResponse(providerId, 200)
-  }
-
-  @postJson("/api/items/delete")
-  def delete(id: Int): Response = {
-    if (Items.exists("id", id)) {
-      Items.delete(id)
-      JSONResponse("Ok", 200)
-    }
-    else {
-      JSONResponse("non existing item", 404)
-    }
-  }
-
   @get("/api/consumers")
   def consumers(locationName: String): Response = {
     val locationInstance = Location.findByAttribute("name", locationName) match {
@@ -131,6 +62,34 @@ object RestfulAPIServer extends MainRoutes  {
     JSONResponse(consumer.id)
   }
 
+  @get("/api/providers")
+  def providers(locationName: String): Response = {
+    val locationInstance = Location.findByAttribute("name", locationName) match {
+      case Some(s) => s
+      case _ => return JSONResponse("non existing location", 404)
+    }
+    val locationId = locationInstance.id
+    JSONResponse(Provider.filter(Map("locationId" -> locationId)).map(provider => provider.toMap))
+  }
+
+  @postJson("/api/providers")
+  def providers(username: String, storeName: String, 
+                location: String, maxDeliveryDistance: Int): Response = {
+    if (User.exists("username", username)) {
+      return JSONResponse("existing username", 409)
+    }
+    
+    val locationInstance = Location.findByAttribute("name", location) match {
+      case Some(s) => s
+      case _ => return JSONResponse("non existing location", 409)
+    }
+    
+    val locationId = locationInstance.id
+    val provider = Provider(username, storeName, locationId, maxDeliveryDistance, "provider")
+    provider.save()
+    JSONResponse(provider.id)
+  }
+
   @postJson("/api/users/delete/")
   def deleteUser(userId: Int): Response = {
     val instanceUser = User.find(userId)
@@ -139,6 +98,47 @@ object RestfulAPIServer extends MainRoutes  {
       case _ => return JSONResponse("non existing user", 404)
     }
     return JSONResponse("Ok")
+  }
+
+  @get("/api/items")
+  def items(providerUsername: String): Response = {
+    if (! Provider.exists("username", providerUsername)){
+      return JSONResponse("non existing provider", 404)
+    }
+
+    val provider = Provider.findByAttribute("username", providerUsername) match {
+      case Some(id) => id
+      case _ => return JSONResponse("non existing provider", 404)
+    }
+
+    val itemsList = Items.filter(Map("providerId" -> provider.id))
+    JSONResponse(itemsList.map(item => item.toMap))
+  }
+
+  @postJson("/api/items")
+  def items(name: String, description: String, price: Float, providerUsername: String): Response = {
+    val providerId = Provider.findByAttribute("username", providerUsername) match {
+      case Some(id) => id.id
+      case _ => return JSONResponse("non existing provider", 404)
+    }
+
+    if (Items.exists("name", name)) {
+      return JSONResponse("existing item for provider", 409)
+    }
+    val item = Items(name, price, description, providerId)
+    item.save()
+    JSONResponse(providerId, 200)
+  }
+
+  @postJson("/api/items/delete")
+  def delete(id: Int): Response = {
+    if (Items.exists("id", id)) {
+      Items.delete(id)
+      JSONResponse("Ok", 200)
+    }
+    else {
+      JSONResponse("non existing item", 404)
+    }
   }
 
   override def main(args: Array[String]): Unit = {
