@@ -87,6 +87,17 @@ object RestfulAPIServer extends MainRoutes  {
     JSONResponse(providerId, 200)
   }
 
+  @postJson("/api/items/delete")
+  def delete(id: Int): Response = {
+    if (Items.exists("id", id)) {
+      Items.delete(id)
+      JSONResponse("Ok", 200)
+    }
+    else {
+      JSONResponse("non existing item", 404)
+    }
+  }
+
   // @get("/api/consumers")
   // def consumers(): Response = {
   //   JSONResponse(Consumer.all.map(consumer => consumer.toMap))
