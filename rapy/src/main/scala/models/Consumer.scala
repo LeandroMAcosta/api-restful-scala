@@ -12,7 +12,10 @@ object Consumer extends ModelCompanion[User] {
     value.save()
     value
   }
- }
+
+  override def all = User.all.filter(user => user.toMap.get("typeOfUser") == Some("consumer"))
+
+}
 
 class Consumer(username: String,
                locationId: Int,
