@@ -67,21 +67,21 @@ object RestfulAPIServer extends MainRoutes  {
     JSONResponse("detail",200)
   }
   
-  @postJson("/api/orders")
-  def orders(providerUsername: string, consumerUsername: string, 
-             items: List[(String,Int)]): Response = {
-    JSONResponse("orders",200)
-  }
+  // @postJson("/api/orders")
+  // def orders(providerUsername: String, consumerUsername: String, 
+  //            items: List[(String,Int)]): Response = {
+  //   JSONResponse("orders",200)
+  // }
   
-  @postJson("/api/orders/delete")
-  def orders(id: Int): Response = {
-   JSONResponse("delete",200)
-  }
+  // @postJson("/api/orders/delete")
+  // def orders(id: Int): Response = {
+  //  JSONResponse("delete",200)
+  // }
   
-  @postJson("/api/orders/deliver")
-  def orders(id: Int): Response = {
-   JSONResponse("deliver",200)
-  }
+  // @postJson("/api/orders/deliver")
+  // def orders(id: Int): Response = {
+  //  JSONResponse("deliver",200)
+  // }
   // @get("/api/consumers")
   // def consumers(): Response = {
   //   JSONResponse(Consumer.all.map(consumer => consumer.toMap))
