@@ -14,15 +14,7 @@ object RestfulAPIServer extends MainRoutes  {
     Location.all.foreach(println)
     
     println("Filtrado: ")
-    Location.filter(Map("coordX" -> 10)).foreach(println)
-    
-    // println("\nFuera del if")
-    // if (Location.exists("name", "leandro")) {
-    //   println("Dentro del if")
-    // } else {
-    //   println("Afuera if")
-    // }
-    
+    Location.filter(Map("coordX" -> 10)).foreach(println)  
     JSONResponse("asdasd", 200)
   }
 
@@ -33,9 +25,9 @@ object RestfulAPIServer extends MainRoutes  {
 
   @postJson("/api/locations")
   def locations(name: String, coordX: Int, coordY: Int): Response = {
-    // if (Location.exists("name", name)) {
-    //   return JSONResponse("Existing location", 409)
-    // }
+    if (Location.exists("name", name)) {
+      return JSONResponse("Existing location", 409)
+    }
 
     val location = Location(name, coordX, coordY)
     location.save()
