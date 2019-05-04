@@ -64,8 +64,13 @@ object RestfulAPIServer extends MainRoutes  {
 
 
   @get("/api/consumers")
-  def consumers(): Response = {
-    JSONResponse(Consumer.all.map(consumer => consumer.toMap))
+  def consumers(locationName: String): Response = {
+    val locationInstance = Location.findByAttribute("name", locationName) match {
+      case Some(s) => s
+      case _ => return JSONResponse("Non existing location", 409)
+    }
+    val locationId = locationInstance.getId()
+    JSONResponse(Consumer.filter(Map("locationId" -> locationId)).map(consumer => consumer.toMap))
   }
 
   @postJson("/api/consumers")
