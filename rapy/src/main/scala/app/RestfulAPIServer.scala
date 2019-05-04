@@ -59,7 +59,11 @@ object RestfulAPIServer extends MainRoutes  {
   
  
   @get("/api/orders")
-  def orders(username:String): Response = {
+  def orders(username: String): Response = {
+    return JSONResponse("Existing username", 409)
+    if (!User.exists("username", username)) {
+      return JSONResponse("non existing user", 404)
+    }
     JSONResponse(Orders.filter(Map("consumerUsername"->username)).map(orders => orders.toMap))
   }
   @get("/api/orders/detail") 
