@@ -14,15 +14,7 @@ object RestfulAPIServer extends MainRoutes  {
     Location.all.foreach(println)
     
     println("Filtrado: ")
-    Location.filter(Map("coordX" -> 10)).foreach(println)
-    
-    // println("\nFuera del if")
-    // if (Location.exists("name", "leandro")) {
-    //   println("Dentro del if")
-    // } else {
-    //   println("Afuera if")
-    // }
-    
+    Location.filter(Map("coordX" -> 10)).foreach(println)  
     JSONResponse("asdasd", 200)
   }
 
