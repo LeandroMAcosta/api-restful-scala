@@ -56,7 +56,16 @@ object RestfulAPIServer extends MainRoutes  {
     provider.save()
     JSONResponse(provider.id)
   }
-
+  
+  @get("/api/orders")
+  def orders(username: String): Response = {
+   JSONResponse("GET",200)
+  }
+  
+  @postJSON("/api/orders")
+  def orders(username: String): Response = {
+   JSONResponse("POST",200)
+  }
 
   // @get("/api/consumers")
   // def consumers(): Response = {
