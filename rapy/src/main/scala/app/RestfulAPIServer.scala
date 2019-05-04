@@ -59,8 +59,6 @@ object RestfulAPIServer extends MainRoutes  {
 
   @get("/api/items")
   def items(providerUsername: String): Response = {
-  //  val providerList = User.filter(Map("typeOfUser" -> "provider")).map(username => username.toMap)
-
     if (! Provider.exists("username", providerUsername)){
       return JSONResponse("non existing provider", 404)
     }
@@ -70,13 +68,23 @@ object RestfulAPIServer extends MainRoutes  {
       case _ => return JSONResponse("non existing provider", 404)
     }
 
-    val itemsList = Items.filter(Map("providerId" -> provider.getId()))
-    JSONResponse(itemsList)
+    val itemsList = Items.filter(Map("providerId" -> provider.id))
+    JSONResponse(itemsList.map(item => item.toMap))
   }
 
   @postJson("/api/items")
   def items(name: String, description: String, price: Float, providerUsername: String): Response = {
-    
+    val providerId = Provider.findByAttribute("username", providerUsername) match {
+      case Some(id) => id.getId()
+      case _ => return JSONResponse("non existing provider", 404)
+    }
+
+    if (Items.exists("name", name)) {
+      return JSONResponse("existing item for provider", 409)
+    }
+    val item = Items(name, price, description, providerId)
+    item.save()
+    JSONResponse(providerId, 200)
   }
 
   // @get("/api/consumers")
