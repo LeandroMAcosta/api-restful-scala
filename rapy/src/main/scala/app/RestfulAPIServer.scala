@@ -73,8 +73,8 @@ object RestfulAPIServer extends MainRoutes  {
   @postJson("/api/providers")
   def providers(username: String, storeName: String, 
                 location: String, maxDeliveryDistance: Int): Response = {
-    if (User.exists("username", username)) {
-      return JSONResponse("existing username", 409)
+    if (User.exists("username", username) || Provider.exists("storeName", storeName) ) {
+      return JSONResponse("existing username/storeName", 409)
     } else if (maxDeliveryDistance < 0) {
       return JSONResponse("negative maxDeliveryDistance ", 400)
     }
