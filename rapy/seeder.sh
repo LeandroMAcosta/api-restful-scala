@@ -10,3 +10,6 @@ http localhost:4000/api/consumers username="consumidor" location="guemes"
 http localhost:4000/api/consumers username="consumidor1" location="guemes" 
 http localhost:4000/api/consumers username="consumidor2" location="guemes" 
 http localhost:4000/api/consumers username="consumidor3" location="nueva cordoba" 
+
+http localhost:4000/api/providers?locationName="guemes"
+http localhost:4000/api/consumers?locationName="guemes"
