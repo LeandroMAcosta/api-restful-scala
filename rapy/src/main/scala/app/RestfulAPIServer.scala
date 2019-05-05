@@ -49,6 +49,8 @@ object RestfulAPIServer extends MainRoutes  {
                 location: String, maxDeliveryDistance: Int): Response = {
     if (User.exists("username", username)) {
       return JSONResponse("existing username", 409)
+    } else if (maxDeliveryDistance < 0) {
+      return JSONResponse("negative maxDeliveryDistance ", 400)
     }
     
     val locationInstance = Location.findByAttribute("name", location) match {
@@ -57,7 +59,7 @@ object RestfulAPIServer extends MainRoutes  {
     }
     
     val locationId = locationInstance.id
-    val provider = Provider(username, storeName, locationId, maxDeliveryDistance, "provider")
+    val provider = Provider(username, storeName, locationId, maxDeliveryDistance, "provider", 0)
     provider.save()
     JSONResponse(provider.id)
   }
