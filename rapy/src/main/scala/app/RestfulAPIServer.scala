@@ -53,6 +53,35 @@ object RestfulAPIServer extends MainRoutes  {
     return JSONResponse("Ok")
   }
 
+  /*
+   *  Consumers routes
+   *  - providers  (GET)
+   *  - providers  (POST)
+   */
+  
+  @get("/api/consumers")
+  def consumers(): Response = {
+    JSONResponse(Consumer.all.map(consumer => consumer.toMap))
+  }
+
+  @postJson("/api/consumers")
+  def consumers(username: String, location: String): Response = {
+    if (User.exists("username", username)) {
+      return JSONResponse("existing username", 409)
+    }
+
+    val locationInstance = Location.findByAttribute("name", location) match {
+      case Some(s) => s
+      case _ => return JSONResponse("not existing location", 409)
+    }
+    
+    val locationId = locationInstance.id
+
+    val consumer = Consumer(username, locationId, "consumer", 0)
+    consumer.save()
+    JSONResponse(consumer.id)
+  }
+  
   
   /*
    *  Providers routes
@@ -92,38 +121,21 @@ object RestfulAPIServer extends MainRoutes  {
     provider.save()
     JSONResponse(provider.id)
   }
-
   
-  /*
-   *  Consumers routes
-   *  - providers  (GET)
-   *  - providers  (POST)
-   */
-  
-  @get("/api/consumers")
-  def consumers(): Response = {
-    JSONResponse(Consumer.all.map(consumer => consumer.toMap))
+ 
+  @get("/api/orders")
+  def orders(username: String): Response = {
+    if (!User.exists("username", username)) {
+      return JSONResponse("non existing user", 404)
+    }
+    JSONResponse(Orders.filter(Map("consumerUsername"->username)).map(orders => orders.toMap))
   }
 
-  @postJson("/api/consumers")
-  def consumers(username: String, location: String): Response = {
-    if (User.exists("username", username)) {
-      return JSONResponse("existing username", 409)
-    }
-
-    val locationInstance = Location.findByAttribute("name", location) match {
-      case Some(s) => s
-      case _ => return JSONResponse("not existing location", 409)
-    }
-    
-    val locationId = locationInstance.id
-
-    val consumer = Consumer(username, locationId, "consumer", 0)
-    consumer.save()
-    JSONResponse(consumer.id)
+  @get("/api/orders/detail") 
+  def orders(id : Int): Response = {
+    JSONResponse("detail",200)
   }
   
-
   /*
    *  Items routes
    *  - items  (GET)
