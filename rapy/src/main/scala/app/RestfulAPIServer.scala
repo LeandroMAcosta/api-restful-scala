@@ -126,7 +126,7 @@ object RestfulAPIServer extends MainRoutes  {
    *  Orders routes
    *  - orders        (GET)
    *  - orders        (POST)
-   *  - orders/detail (POST)
+   *  - orders/detail (GET)
    */
  
   @get("/api/orders")
@@ -138,11 +138,8 @@ object RestfulAPIServer extends MainRoutes  {
   }
 
   @postJson("/api/orders")
-  def orders(): Response = {
-    
-    
-    // val orders = Order()
-    // orders.save()
+  def orders(providerUsername: String, consumerUsername: String): Response = {
+
     JSONResponse("TEST")
   }  
 
