@@ -61,7 +61,10 @@ object RestfulAPIServer extends MainRoutes  {
    */
 
   @get("/api/providers")
-  def providers(locationName: String): Response = {
+  def providers(locationName: String = ""): Response = {
+    if (locationName == "") {
+      return JSONResponse(Provider.all.map(provider => provider.toMap))
+    }
     val locationInstance = Location.findByAttribute("name", locationName) match {
       case Some(s) => s
       case _ => return JSONResponse("non existing location", 404)
