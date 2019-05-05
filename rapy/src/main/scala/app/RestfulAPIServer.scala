@@ -18,6 +18,11 @@ object RestfulAPIServer extends MainRoutes  {
     JSONResponse("asdasd", 200)
   }
 
+  /*
+   *  Location routes
+   *    - locations (GET)
+   *    - locations (POST)
+   */
   @get("/api/locations")
   def locations(): Response = {
     JSONResponse(Location.all.map(location => location.toMap))
@@ -34,6 +39,14 @@ object RestfulAPIServer extends MainRoutes  {
     JSONResponse(location.id)
   }
 
+  /*
+   *  User routes
+   *    - providers  (GET)
+   *    - providers  (POST)
+   *    - consumers  (GET)
+   *    - consumers  (POST)
+   *    - deleteUser (POST)
+   */
   @get("/api/providers")
   def providers(locationName: String): Response = {
     val locationInstance = Location.findByAttribute("name", locationName) match {
