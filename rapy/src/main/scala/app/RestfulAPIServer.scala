@@ -120,7 +120,7 @@ object RestfulAPIServer extends MainRoutes  {
     
     val locationId = locationInstance.id
 
-    val consumer = Consumer(username, locationId, "consumer")
+    val consumer = Consumer(username, locationId, "consumer", 0)
     consumer.save()
     JSONResponse(consumer.id)
   }
