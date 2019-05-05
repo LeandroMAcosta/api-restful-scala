@@ -25,7 +25,7 @@ class Orders(val consumerId: Int,val consumerUsername: String,
   override def toMap: Map[String, Any] = 
     super.toMap + ("consumerId"-> consumerId, "consumerUsername" -> consumerUsername,
                    "providerId" -> providerId, "providerStoreName" -> providerStoreName,
-                   "orderTotal" -> orderTotal, "statues" -> status)
+                   "orderTotal" -> orderTotal, "status" -> status)
 
   override def toString: String = s"Orders: $id"
 }
