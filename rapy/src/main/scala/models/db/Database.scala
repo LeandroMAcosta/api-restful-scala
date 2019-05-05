@@ -16,13 +16,13 @@ object Database {
   private[models] val locations = new DatabaseTable[Location]("locations.json")
   private[models] val users = new DatabaseTable[User]("users.json")
   private[models] val items = new DatabaseTable[Items]("items.json")
-  private[models] val orders = new DatabaseTable[Orders]("orders.json") 
+  private[models] val orders = new DatabaseTable[Order]("orders.json") 
   
   private val databases = List(
     (locations, Location),
     (users, User),
     (items, Items),
-    (orders, Orders)
+    (orders, Order)
   )
 
   private def loadDatabaseTable(file: String): Try[List[JValue]] = Try {

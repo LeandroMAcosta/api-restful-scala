@@ -121,15 +121,30 @@ object RestfulAPIServer extends MainRoutes  {
     provider.save()
     JSONResponse(provider.id)
   }
-  
+ 
+  /*
+   *  Orders routes
+   *  - orders        (GET)
+   *  - orders        (POST)
+   *  - orders/detail (POST)
+   */
  
   @get("/api/orders")
   def orders(username: String): Response = {
     if (!User.exists("username", username)) {
       return JSONResponse("non existing user", 404)
     }
-    JSONResponse(Orders.filter(Map("consumerUsername"->username)).map(orders => orders.toMap))
+    JSONResponse(Order.filter(Map("consumerUsername" -> username)).map(order => order.toMap))
   }
+
+  @postJson("/api/orders")
+  def orders(): Response = {
+    
+    
+    // val orders = Order()
+    // orders.save()
+    JSONResponse("TEST")
+  }  
 
   @get("/api/orders/detail") 
   def orders(id : Int): Response = {
