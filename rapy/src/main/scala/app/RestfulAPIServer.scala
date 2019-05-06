@@ -3,6 +3,7 @@ package app
 import cask._
 import models._
 import scala.collection.script.Location
+import upickle.default._
 
 object RestfulAPIServer extends MainRoutes  {
   override def host: String = "0.0.0.0"
@@ -171,7 +172,11 @@ object RestfulAPIServer extends MainRoutes  {
   }
 
   @postJson("/api/items")
-  def items(name: String, description: String, price: Float, providerUsername: String): Response = {
+  def items(name: String, description: String, price: Float, providerUsername: String, items: String): Response = {
+    println(items)
+    return JSONResponse(1, 200)
+  
+
     val providerId = Provider.findByAttribute("username", providerUsername) match {
       case Some(id) => id.id
       case _ => return JSONResponse("non existing provider", 404)

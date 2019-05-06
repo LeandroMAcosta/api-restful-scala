@@ -11,7 +11,6 @@ lazy val root = (project in file("."))
     libraryDependencies += scalaTest % Test,
     libraryDependencies += "com.lihaoyi" %% "cask" % "0.1.9",
     libraryDependencies += "org.json4s" %% "json4s-native" % "3.6.0",
-    libraryDependencies += "com.lihaoyi" %% "upickle" % "0.7.1"
   )
 
 // See https://www.scala-sbt.org/1.x/docs/Using-Sonatype.html for instructions on how to publish to Sonatype.
