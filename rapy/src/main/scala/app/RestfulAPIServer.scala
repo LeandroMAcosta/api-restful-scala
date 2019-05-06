@@ -157,7 +157,10 @@ object RestfulAPIServer extends MainRoutes  {
    */
   
   @get("/api/items")
-  def items(providerUsername: String): Response = {
+  def items(providerUsername: String = ""): Response = {
+    if (providerUsername == "") {
+      return JSONResponse(Items.all.map(item => item.toMap))
+    }
     if (! Provider.exists("username", providerUsername)){
       return JSONResponse("non existing provider", 404)
     }
