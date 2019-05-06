@@ -13,3 +13,7 @@ http localhost:4000/api/consumers username="consumidor3" location="nueva cordoba
 
 http localhost:4000/api/providers?locationName="guemes"
 http localhost:4000/api/consumers
+
+# http localhost:4000/api/orders providerUsername="lapeti1" consumerUsername="consumidor" items="asdasd"
+
+http localhost:4000/api/orders providerUsername="lapeti1" consumerUsername="consumidor" jsonItems='[{"name":"Item 1","amount":2},{"name":"Item 2","amount":1}]'

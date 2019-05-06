@@ -5,6 +5,13 @@ import models._
 import scala.collection.script.Location
 import upickle.default._
 
+import upickle.default.{ReadWriter => RW, macroRW}
+
+case class ItemJSON(name: String, amount: Int)
+object ItemJSON {
+  implicit val rw: RW[ItemJSON] = macroRW
+}
+
 object RestfulAPIServer extends MainRoutes  {
   override def host: String = "0.0.0.0"
   override def port: Int = 4000
@@ -139,7 +146,11 @@ object RestfulAPIServer extends MainRoutes  {
   }
 
   @postJson("/api/orders")
-  def orders(providerUsername: String, consumerUsername: String): Response = {
+  def orders(providerUsername: String, consumerUsername: String, jsonItems: String): Response = {
+
+    val items = read[Seq[ItemJSON]](jsonItems)
+
+    println(items)
 
     JSONResponse("TEST")
   }  
@@ -176,10 +187,6 @@ object RestfulAPIServer extends MainRoutes  {
 
   @postJson("/api/items")
   def items(name: String, description: String, price: Float, providerUsername: String, items: String): Response = {
-    println(items)
-    return JSONResponse(1, 200)
-  
-
     val providerId = Provider.findByAttribute("username", providerUsername) match {
       case Some(id) => id.id
       case _ => return JSONResponse("non existing provider", 404)
