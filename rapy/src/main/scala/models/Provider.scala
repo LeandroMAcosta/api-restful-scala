@@ -1,4 +1,5 @@
 package models
+import java.nio.file.attribute.UserPrincipal
 
 object Provider extends ModelCompanion[Provider] {
   protected def dbTable: DatabaseTable[Provider] = Database.providers
@@ -22,9 +23,9 @@ class Provider(username: String, locationId: Int, balance: Int,
 
   protected def dbTable: DatabaseTable[Provider] = Provider.dbTable
 
-  override def toMap: Map[String, Any] = 
-    super.toMap + ("storeName" -> storeName, 
-                   "maxDeliveryDistance" -> maxDeliveryDistance)
+  override def toMap: Map[String, Any] = super.toMap + 
+          ("username" -> username, "locationId" -> locationId, "balance" -> balance) + 
+          ("storeName" -> storeName, "maxDeliveryDistance" -> maxDeliveryDistance)
 
   override def toString: String = s"Provider: $username"
 }
