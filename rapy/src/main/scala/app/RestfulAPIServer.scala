@@ -155,7 +155,7 @@ object RestfulAPIServer extends MainRoutes  {
       case _ => return JSONResponse("non existing Order", 404)
     }
     Order.delete(ordersInstance.id)
-    JsonResponse("OK",200)
+    JSONResponse("OK",200)
   }
 
   @postJson("/api/orders/deliver")
@@ -168,7 +168,7 @@ object RestfulAPIServer extends MainRoutes  {
     order.status = "delivered"
     Order.delete(id)
     order.save()
-    JsonResponse("Ok",200)  
+    JSONResponse("Ok",200)  
   }
 
 
