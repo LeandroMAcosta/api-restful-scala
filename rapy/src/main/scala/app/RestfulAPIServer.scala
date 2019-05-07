@@ -147,9 +147,12 @@ object RestfulAPIServer extends MainRoutes  {
 
   @postJson("/api/orders")
   def orders(providerUsername: String, consumerUsername: String, jsonItems: String): Response = {
+    if (!Provider.exists("username", providerUsername) || !Consumer.exists("username", consumerUsername)) {
+      return JSONResponse("non existing consumer/provider/item for provider", 404)
+    }
 
     val items = read[Seq[ItemJSON]](jsonItems)
-
+    
     println(items)
 
     JSONResponse("TEST")
@@ -172,7 +175,7 @@ object RestfulAPIServer extends MainRoutes  {
     if (providerUsername == "") {
       return JSONResponse(Items.all.map(item => item.toMap))
     }
-    if (! Provider.exists("username", providerUsername)){
+    if (!Provider.exists("username", providerUsername)){
       return JSONResponse("non existing provider", 404)
     }
 

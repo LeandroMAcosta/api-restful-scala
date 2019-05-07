@@ -1,5 +1,4 @@
 package models
-import java.nio.file.attribute.UserPrincipal
 
 object Provider extends ModelCompanion[Provider] {
   protected def dbTable: DatabaseTable[Provider] = Database.providers
