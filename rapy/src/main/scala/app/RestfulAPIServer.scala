@@ -164,7 +164,11 @@ object RestfulAPIServer extends MainRoutes  {
       case Some(s) => s
       case _ => return JSONResponse("non existing Order", 404)
     }
-    
+    var order = orderInstance
+    order.status = "delivered"
+    Order.delete(id)
+    order.save()
+    JsonResponse("Ok",200)  
   }
 
 
