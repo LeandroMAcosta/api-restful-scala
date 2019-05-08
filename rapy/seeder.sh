@@ -14,6 +14,13 @@ http localhost:4000/api/consumers username="consumidor" location="guemes"
 http localhost:4000/api/consumers username="consumidor1" location="guemes" 
 http localhost:4000/api/consumers username="consumidor2" location="guemes" 
 http localhost:4000/api/consumers username="consumidor3" location="nueva cordoba" 
+# name: string, description: string, price: float, providerUsername: string}
+echo "Creando items"
+http localhost:4000/api/items/ name="hamburguesas con papas" description="description1" price:=10 providerUsername="lapeti1"
+http localhost:4000/api/items/ name="papas fritas" description="description2" price:=100 providerUsername="lapeti1"
+http localhost:4000/api/items/ name="milanesa" description="description13" price:=30 providerUsername="lapeti2"
+http localhost:4000/api/items/ name="fideos blancos" description="nueva cordoba" price:=6000 providerUsername="lapeti3"
+
 
 echo "Get de providers"
 http localhost:4000/api/providers
@@ -26,4 +33,4 @@ http localhost:4000/api/consumers
 # http localhost:4000/api/orders providerUsername="lapeti1" consumerUsername="consumidor" items="asdasd"
 echo "Post de orders"
 http localhost:4000/api/orders providerUsername="lapeti1" consumerUsername="consumidor" jsonItems='[{"name":"Item 1","amount":2},{"name":"Item 2","amount":1}]'
-rm ./db/*.json
+# rm ./db/*.json

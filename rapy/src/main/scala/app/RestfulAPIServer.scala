@@ -147,15 +147,24 @@ object RestfulAPIServer extends MainRoutes  {
 
   @postJson("/api/orders")
   def orders(providerUsername: String, consumerUsername: String, jsonItems: String): Response = {
+    // ---- order post -----
     if (!Provider.exists("username", providerUsername) || !Consumer.exists("username", consumerUsername)) {
       return JSONResponse("non existing consumer/provider/item for provider", 404)
     }
-
     val items = read[Seq[ItemJSON]](jsonItems)
+    if (items.exists(x => x.amount <= 0))  {
+      return JSONResponse("negative amount", 400)
+    }
     
-    println(items)
+    val provider = Provider.filter(Map("username" -> providerUsername)).head
+    val consumer = Consumer.filter(Map("username" -> consumerUsername)).head
+    val itemsToMap = items.map(x => Map("name" -> x.name, "amount" -> x.amount))
+    val itemsProvider = Items.filter(Map("providerId" -> provider.id)).map(item => item.toMap)
 
-    JSONResponse("TEST")
+    val order = Order(consumer.id, consumer.username, provider.id, provider.storeName, 27.0F, "estatus", itemsProvider)
+    order.save()
+    // ---- order post -----
+    JSONResponse(order.id)
   }  
 
   @get("/api/orders/detail") 
