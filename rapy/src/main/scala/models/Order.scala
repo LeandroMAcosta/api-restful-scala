@@ -18,7 +18,7 @@ object Order extends ModelCompanion[Order] {
 
 class Order(val consumerId: Int,val consumerUsername: String, val consumerLocation: String,
              val providerId: Int,val providerStoreName: String, 
-             val orderTotal: Float, val status: String) extends Model[Order] {
+             val orderTotal: Float, var status: String) extends Model[Order] {
   
   protected def dbTable: DatabaseTable[Order] = Order.dbTable
 
@@ -29,4 +29,5 @@ class Order(val consumerId: Int,val consumerUsername: String, val consumerLocati
                    "status" -> status)
 
   override def toString: String = s"Order: $id"
+  
 }

@@ -52,14 +52,22 @@ object RestfulAPIServer extends MainRoutes  {
   //  *  User routes
   //  *  - deleteUser (POST)
   //  */
-  @postJson("/api/users/delete/")
-  def deleteUser(userId: Int): Response = {
-    val instanceUser = Consumer.find(userId)
-    instanceUser match {
-      case Some(user) => Consumer.delete(userId)
-      case _ => return JSONResponse("non existing user", 404)
+  @post("/api/users/delete/:username")
+  def deleteUser(username: String): Response = {
+    
+    if (Consumer.exists("username", username)) {
+      val instanceUser = Consumer.all.find(consumer => consumer.username == username).get
+      Consumer.delete(instanceUser.id)
+      return JSONResponse("Ok", 404)
+    
+    } else if (Provider.exists("username", username)) {
+      val instanceUser = Provider.all.find(consumer => consumer.username == username).get
+      Provider.delete(instanceUser.id)
+      return JSONResponse("Ok", 404)
     }
-    return JSONResponse("Ok")
+
+    return JSONResponse("non existing user", 404)
+    
   }
 
   /*
@@ -188,7 +196,7 @@ object RestfulAPIServer extends MainRoutes  {
     JSONResponse(order.id)
   }  
 
-  @postJson("/api/orders/delete")
+  @post("/api/orders/delete/:id")
   def orderDelete(id : Int): Response = {
     val ordersInstance =  Order.find(id) match {
       case Some(s) => s
@@ -198,19 +206,15 @@ object RestfulAPIServer extends MainRoutes  {
     JSONResponse("OK",200)
   }
   
-  @postJson("/api/orders/deliver")
+  @post("/api/orders/deliver/:id")
   def orderDeliver(id : Int): Response = {
-    val order =  Order.find(id) match {
+    var order =  Order.find(id) match {
       case Some(s) => s
       case _ => return JSONResponse("non existing Order", 404)
     }
-    val new_order = Order(
-      order.consumerId, order.consumerUsername, 
-      order.consumerLocation, order.providerId, order.providerStoreName,
-       order.orderTotal, "delivered"
-    )
-    Order.delete(id)
-    new_order.save()
+    order.status = "delivered"
+    order.save()
+
     JSONResponse("Ok",200)  
   }
   
