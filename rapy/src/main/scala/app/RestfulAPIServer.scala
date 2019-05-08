@@ -188,9 +188,14 @@ object RestfulAPIServer extends MainRoutes  {
     JSONResponse(order.id)
   }  
 
-  @get("/api/orders/detail") 
+  @postJson("/api/orders/delete")
   def orders(id : Int): Response = {
-    JSONResponse("detail",200)
+    val ordersInstance =  Order.find(id) match {
+      case Some(s) => s
+      case _ => return JSONResponse("non existing Order", 404)
+    }
+    Order.delete(ordersInstance.id)
+    JSONResponse("OK",200)
   }
   
   /*
