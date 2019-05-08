@@ -152,35 +152,46 @@ object RestfulAPIServer extends MainRoutes  {
       return JSONResponse("non existing consumer/provider/item for provider", 404)
     }
     val items = read[Seq[ItemJSON]](jsonItems)
-
-//    var sumar = ListBuffer[Float]()
-//    items.foreach(item => (item match {
-//        case ItemJSON(s, n) => sumar += n * (Items.findByAttribute("name", s) match {
-//            case Some(itemI) => itemI: Items, aca se debe leer su precio
-//            case None => return JSONResponse("non existing consumer/provider/item for provider", 404)
-//        })
-//        case _ =>
-//    }))
-
-//    val orderTotal = sumar.fold(0)((acc,n) => acc + n)
-//    if(orderTotal < 0) {
-//      return JSONResponse("negative amount", 400)
-//    }
-//    val providerStorName =
-//    val status =
-//    val order = Order(consumerId, consumerUsername, providerId,
-//                      providerStoreName, orderTotal, status)
-    // JSONResponse("TEST")
-    if (items.exists(x => x.amount <= 0))  {
-      return JSONResponse("negative amount", 400)
-    }
     
     val provider = Provider.filter(Map("username" -> providerUsername)).head
     val consumer = Consumer.filter(Map("username" -> consumerUsername)).head
-    val itemsToMap = items.map(x => Map("name" -> x.name, "amount" -> x.amount))
-    val itemsProvider = Items.filter(Map("providerId" -> provider.id)).map(item => item.toMap)
 
+
+    val itemsToMap = items.map(x => Map("name" -> x.name, "amount" -> x.amount))  // [name, amount] Json
+    val itemsProvider = Items.filter(Map("providerId" -> provider.id))
+
+
+    // val it = itemsProvider.map(item => Map(item. -> item))
+
+    // itemsToMap.foreach(                                        // Para cada item que llega por json
+    //   item => it.get(item.get("name").get) match {             //
+    //     case Some(t) => t
+    //     case _ => JSONResponse("non existing item")
+    //   }
+    // )
+
+    // println(it)
+
+    // --------------- killer --------------
     
+
+  //  var sumar = ListBuffer[Float]()
+  //  items.foreach(item => (item match {
+  //      case ItemJSON(s, n) => sumar += n * (Items.findByAttribute("name", s) match {
+  //         case Some(itemI) => itemI.name //aca se debe leer su precio
+  //          case None => return JSONResponse("non existing consumer/provider/item for provider", 404)
+  //      })
+  //      case _ =>
+  //  }))
+  //  val orderTotal = sumar.fold(0)((acc,n) => acc + n)
+  //  if(orderTotal < 0) {
+  //    return JSONResponse("negative amount", 400)
+  //  }
+  //  val providerStorName =
+  //  val status =
+  //  val order = Order(consumerId, consumerUsername, providerId,
+  //                    providerStoreName, orderTotal, status)
+
     val order = Order(consumer.id, consumer.username, provider.id, provider.storeName, 27.0F, "estatus", itemsProvider)
     order.save()
     JSONResponse(order.id)
