@@ -21,4 +21,8 @@ class Location(val name: String, val coordX: Int, val coordY: Int) extends Model
     super.toMap + ("name" -> name, "coordX" -> coordX, "coordY" -> coordY)
 
   override def toString: String = s"Location: $name"
+
+  def getName() = name
+  def getCoordX() = coordX
+  def getCoordY() = coordY
 }

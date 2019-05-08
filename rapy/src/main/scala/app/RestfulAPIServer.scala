@@ -163,7 +163,7 @@ object RestfulAPIServer extends MainRoutes  {
     
     val provider = Provider.filter(Map("username" -> providerUsername)).head
     val consumer = Consumer.filter(Map("username" -> consumerUsername)).head
-
+    val location = Location.find(consumer.locationId).get
     val itemsToMap = items.map(x => Map("name" -> x.name, "amount" -> x.amount))
 
     val itemsProvider = Items.filter(Map("providerId" -> provider.id))
@@ -172,48 +172,18 @@ object RestfulAPIServer extends MainRoutes  {
       return JSONResponse("non existing consumer/provider/item for provider", 404)
     }
 
-    var ordenTotal: Float = 0
+    var orderTotal: Float = 0
 
     itemsToMap.foreach(
-      item => ordenTotal += itemsProvider.find(
-        itemProvider => itemProvider.toMap.get("name") == item.get("name")
-      ).get.getPrice() 
+      item => orderTotal += 
+        itemsProvider.find(
+          itemProvider => itemProvider.toMap.get("name") == item.get("name")
+        ).get.getPrice() * item.get("amount").get.asInstanceOf[Int]
     )
-    
-    println(ordenTotal)
 
-    // val it = itemsProvider.map(item => Map(item. -> item))
+    val order = Order(consumer.id, consumer.username, location.name, provider.id, provider.storeName,
+                      orderTotal, "payed")
 
-    // itemsToMap.foreach(                                        // Para cada item que llega por json
-    //   item => it.get(item.get("name").get) match {
-    //     case Some(t) => t
-    //     case _ => JSONResponse("non existing item")
-    //   }
-    // )
-
-    // println(it)
-
-    // --------------- killer --------------
-    
-
-  //  var sumar = ListBuffer[Float]()
-  //  items.foreach(item => (item match {
-  //      case ItemJSON(s, n) => sumar += n * (Items.findByAttribute("name", s) match {
-  //         case Some(itemI) => itemI.name //aca se debe leer su precio
-  //          case None => return JSONResponse("non existing consumer/provider/item for provider", 404)
-  //      })
-  //      case _ =>
-  //  }))
-  //  val orderTotal = sumar.fold(0)((acc,n) => acc + n)
-  //  if(orderTotal < 0) {
-  //    return JSONResponse("negative amount", 400)
-  //  }
-  //  val providerStorName =
-  //  val status =
-  //  val order = Order(consumerId, consumerUsername, providerId,
-  //                    providerStoreName, orderTotal, status)
-
-    val order = Order(consumer.id, consumer.username, provider.id, provider.storeName, 27.0F, "estatus", itemsProvider.map(x => x.toMap))
     order.save()
     JSONResponse(order.id)
   }  
