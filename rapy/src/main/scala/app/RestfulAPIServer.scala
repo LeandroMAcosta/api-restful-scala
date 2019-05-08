@@ -146,6 +146,14 @@ object RestfulAPIServer extends MainRoutes  {
     JSONResponse(Order.filter(Map("consumerUsername" -> username)).map(order => order.toMap))
   }
 
+  private def validItems(itemsToMap: Seq[Map[String,Any]], itemsProvider: List[Items]): Boolean = {
+    itemsToMap.forall(
+      item => itemsProvider.exists(
+        itProvider => itProvider.toMap.get("name") == item.get("name")
+      )
+    )
+  }
+
   @postJson("/api/orders")
   def orders(providerUsername: String, consumerUsername: String, jsonItems: String): Response = {
     if (!Provider.exists("username", providerUsername) || !Consumer.exists("username", consumerUsername)) {
@@ -156,10 +164,13 @@ object RestfulAPIServer extends MainRoutes  {
     val provider = Provider.filter(Map("username" -> providerUsername)).head
     val consumer = Consumer.filter(Map("username" -> consumerUsername)).head
 
+    val itemsToMap = items.map(x => Map("name" -> x.name, "amount" -> x.amount))
 
-    val itemsToMap = items.map(x => Map("name" -> x.name, "amount" -> x.amount))  // [name, amount] Json
     val itemsProvider = Items.filter(Map("providerId" -> provider.id))
 
+    if (!validItems(itemsToMap, itemsProvider)) {
+      return JSONResponse("non existing consumer/provider/item for provider", 404)
+    }
 
     // val it = itemsProvider.map(item => Map(item. -> item))
 
@@ -192,7 +203,7 @@ object RestfulAPIServer extends MainRoutes  {
   //  val order = Order(consumerId, consumerUsername, providerId,
   //                    providerStoreName, orderTotal, status)
 
-    val order = Order(consumer.id, consumer.username, provider.id, provider.storeName, 27.0F, "estatus", itemsProvider)
+    val order = Order(consumer.id, consumer.username, provider.id, provider.storeName, 27.0F, "estatus", itemsProvider.map(x => x.toMap))
     order.save()
     JSONResponse(order.id)
   }  
