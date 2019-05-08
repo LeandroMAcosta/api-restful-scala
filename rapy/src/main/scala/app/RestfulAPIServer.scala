@@ -188,13 +188,14 @@ object RestfulAPIServer extends MainRoutes  {
           itemProvider => itemProvider.toMap.get("name") == item.get("name")
         ).get.getPrice() * item.get("amount").get.asInstanceOf[Int]
     )
-
+    //{id: int, name: string, price: float, description: string, providerId: int}]
+    // itemsProvider = itemsProvider.filter(itemP => itemsToMap.exist(it => it.name == itemP.get("name").get))
     val order = Order(consumer.id, consumer.username, location.name, provider.id, provider.storeName,
-                      orderTotal, "payed")
+                      orderTotal, "payed", List(Map("key" -> "valor"))) 
 
     order.save()
     JSONResponse(order.id)
-  }  
+  }
 
   @post("/api/orders/delete/:id")
   def orderDelete(id : Int): Response = {
