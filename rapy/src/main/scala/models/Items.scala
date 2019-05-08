@@ -3,8 +3,8 @@ package models
 object Items extends ModelCompanion[Items] {
   protected def dbTable: DatabaseTable[Items] = Database.items
 
-    def apply(name: String, price: Float, description: String, providerId: Int): Items =
-      new Items(name, price, description, providerId)
+  def apply(name: String, price: Float, description: String, providerId: Int): Items =
+    new Items(name, price, description, providerId)
 
   private[models] def apply(jsonValue: JValue): Items = {
     val value = jsonValue.extract[Items]
@@ -21,4 +21,6 @@ class Items(name: String, price: Float, description: String, providerId: Int) ex
     super.toMap + ("name" -> name, "price" -> price, "description" -> description, "providerId" -> providerId)
 
   override def toString: String = s"Item: $name"
+
+  def getPrice() = price
 }

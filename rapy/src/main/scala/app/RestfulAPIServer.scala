@@ -172,10 +172,20 @@ object RestfulAPIServer extends MainRoutes  {
       return JSONResponse("non existing consumer/provider/item for provider", 404)
     }
 
+    var ordenTotal: Float = 0
+
+    itemsToMap.foreach(
+      item => ordenTotal += itemsProvider.find(
+        itemProvider => itemProvider.toMap.get("name") == item.get("name")
+      ).get.getPrice() 
+    )
+    
+    println(ordenTotal)
+
     // val it = itemsProvider.map(item => Map(item. -> item))
 
     // itemsToMap.foreach(                                        // Para cada item que llega por json
-    //   item => it.get(item.get("name").get) match {             //
+    //   item => it.get(item.get("name").get) match {
     //     case Some(t) => t
     //     case _ => JSONResponse("non existing item")
     //   }
