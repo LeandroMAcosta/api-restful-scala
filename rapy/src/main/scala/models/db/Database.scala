@@ -14,13 +14,15 @@ import models._
 object Database {
   var baseDir: String = "db"
   private[models] val locations = new DatabaseTable[Location]("locations.json")
-  private[models] val users = new DatabaseTable[User]("users.json")
+  private[models] val providers = new DatabaseTable[Provider]("providers.json")
+  private[models] val consumers = new DatabaseTable[Consumer]("consumers.json")
   private[models] val items = new DatabaseTable[Items]("items.json")
   private[models] val orders = new DatabaseTable[Order]("orders.json") 
   
   private val databases = List(
     (locations, Location),
-    (users, User),
+    (providers, Provider),
+    (consumers, Consumer),
     (items, Items),
     (orders, Order)
   )

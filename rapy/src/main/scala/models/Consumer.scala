@@ -1,10 +1,10 @@
 package models
 
-object Consumer extends ModelCompanion[User] {
-  protected def dbTable: DatabaseTable[User] = Database.users
+object Consumer extends ModelCompanion[Consumer] {
+  protected def dbTable: DatabaseTable[Consumer] = Database.consumers
 
-  def apply(username: String, locationId: Int, typeOfUser: String, balance: Int): Consumer =
-    new Consumer(username, locationId, typeOfUser, balance)
+  def apply(username: String, locationId: Int, balance: Int): Consumer =
+    new Consumer(username, locationId, balance)
 
   private[models] def apply(jsonValue: JValue): Consumer = {
     val value = jsonValue.extract[Consumer]
@@ -13,16 +13,15 @@ object Consumer extends ModelCompanion[User] {
     value
   }
 
-  override def all = User.all.filter(user => user.toMap.get("typeOfUser") == Some("consumer"))
-
 }
 
-class Consumer(username: String,
-               locationId: Int,
-               typeOfUser: String,
-               balance: Int) extends User(username, locationId, typeOfUser, balance) {
+class Consumer(username: String, locationId: Int, balance: Int) 
+               extends User(username, locationId, balance) with Model[Consumer] {
+  
+  protected def dbTable: DatabaseTable[Consumer] = Consumer.dbTable
 
-  override def toMap: Map[String, Any] = super.toMap
+  override def toMap: Map[String, Any] = super.toMap + 
+          ("username" -> username, "locationId" -> locationId, "balance" -> balance)
 
   override def toString: String = s"Consumer: $username"
 }
