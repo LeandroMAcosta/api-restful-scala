@@ -186,7 +186,7 @@ object RestfulAPIServer extends MainRoutes  {
   }
 
   @postJson("/api/items")
-  def items(name: String, description: String, price: Float, providerUsername: String, items: String): Response = {
+  def items(name: String, description: String, price: Float, providerUsername: String): Response = {
     val providerId = Provider.findByAttribute("username", providerUsername) match {
       case Some(id) => id.id
       case _ => return JSONResponse("non existing provider", 404)
