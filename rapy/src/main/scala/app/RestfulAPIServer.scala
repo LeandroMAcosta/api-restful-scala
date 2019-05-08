@@ -3,6 +3,7 @@ package app
 import cask._
 import models._
 import scala.collection.script.Location
+import scala.collection.mutable.ListBuffer
 import upickle.default._
 
 import upickle.default.{ReadWriter => RW, macroRW}
@@ -152,6 +153,33 @@ object RestfulAPIServer extends MainRoutes  {
 
     println(items)
 
+    val providerId = Provider.findByAttribute("username", providerUsername) match {
+      case Some(prov) => prov.id
+      case None => return JSONResponse("non existing consumer/provider/item for provider", 404)
+    }
+    
+    val consumerId = Consumer.findByAttribute("username", consumerUsername) match {
+      case Some(cons) => cons.id
+      case None => return JSONResponse("non existing consumer/provider/item for provider", 404)
+    }
+    
+    var sumar = ListBuffer[Float]()
+//    items.foreach(item => (item match {
+//        case ItemJSON(s, n) => sumar += n * (Items.findByAttribute("name", s) match {
+//            case Some(itemI) => itemI: Items, aca se debe leer su precio
+//            case None => return JSONResponse("non existing consumer/provider/item for provider", 404)
+//        })
+//        case _ =>
+//    }))
+
+//    val orderTotal = sumar.fold(0)((acc,n) => acc + n)
+//    if(orderTotal < 0) {
+//      return JSONResponse("negative amount", 400)
+//    }
+//    val providerStorName =
+//    val status =
+//    val order = Order(consumerId, consumerUsername, providerId,
+//                      providerStoreName, orderTotal, status)
     JSONResponse("TEST")
   }  
 
