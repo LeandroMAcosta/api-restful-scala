@@ -198,7 +198,7 @@ object RestfulAPIServer extends MainRoutes  {
     JSONResponse("OK",200)
   }
   
-  @post("/api/orders/deliver")
+  @postJson("/api/orders/deliver")
   def orderDeliver(id : Int): Response = {
     val order =  Order.find(id) match {
       case Some(s) => s
