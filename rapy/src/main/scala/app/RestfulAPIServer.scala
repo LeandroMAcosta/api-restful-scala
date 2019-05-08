@@ -160,14 +160,17 @@ object RestfulAPIServer extends MainRoutes  {
 
   @postJson("/api/orders/deliver")
   def orders(id : Int): Response = {
-    val ordersInstance =  Order.find(id) match {
+    val order =  Order.find(id) match {
       case Some(s) => s
       case _ => return JSONResponse("non existing Order", 404)
     }
-    var order = orderInstance
-    order.status = "delivered"
+    val new_order = Order(
+      order.consumerId, order.consumerUsername, 
+      order.providerId, order.providerStoreName, order.orderTotal,
+      "delivered"
+    )
     Order.delete(id)
-    order.save()
+    new_order.save()
     JSONResponse("Ok",200)  
   }
 
