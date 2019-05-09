@@ -16,11 +16,21 @@ trait ModelCompanion[M <: Model[M]] {
 
   def delete(id: Int): Unit = dbTable.delete(id)
 
-  def filter(mapOfAttributes: Map[String, Any]): List[M] =
-
+  def filter(mapOfAttributes: Map[String, Any]): List[M] = {
     all.filter(
-      obj => mapOfAttributes.forall(attr => Some(obj.toMap.get(attr._1)) == attr._2)
+      obj => mapOfAttributes.forall(
+        attr => obj.toMap.get(attr._1) == Some(attr._2)
+      )
     )
+  }
+
+  def findByAttribute(attr: String, value: Any): Option[M] = {
+    val list = filter(Map(attr -> value))
+    exists(attr, value) match {
+      case false => None
+      case true => Some(list.head)
+    }
+  }
 
 }
 
