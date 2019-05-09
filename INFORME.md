@@ -22,7 +22,7 @@ En este laboratorio vamos a implementar una API RESTful para un servicio de deli
 ## ¿Qué es una API RESTful? 
 
 ## Nuestro Modelo
-
+![database](diagrams/database.png)
 
 ## Dificultades 
 
