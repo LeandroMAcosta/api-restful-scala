@@ -144,14 +144,21 @@ object RestfulAPIServer extends MainRoutes  {
    *  - orders        (GET)
    *  - orders        (POST)
    *  - orders/detail (GET)
-   */
- 
+   */ 
+  
+  @get("api/orders/detail/:id")
+  def ordersDetail(id: Int): Response = {
+    if(!Order.exist(id)){
+
+    }
+  }
+
   @get("/api/orders")
   def orders(username: String): Response = {
     if (!Consumer.exists("username", username)) {
       return JSONResponse("non existing user", 404)
     }
-    JSONResponse(Order.filter(Map("consumerUsername" -> username)).map(order => order.detail))
+    JSONResponse(Order.filter(Map("consumerUsername" -> username)).map(order => order.noItem))
   }
 
   private def validItems(itemsToMap: Seq[Map[String,Any]], itemsProvider: List[Items]): Boolean = {
@@ -164,7 +171,7 @@ object RestfulAPIServer extends MainRoutes  {
 
   @postJson("/api/orders")
   def orders(providerUsername: String, consumerUsername: String, jsonItems: String): Response = {
-    if (!Provider.exists("username", providerUsername) || !Consumer.exists("username", consumerUsername)) {
+    if (!Provider.exists("username", providerUsername) && !Consumer.exists("username", consumerUsername)) {
       return JSONResponse("non existing consumer/provider/item for provider", 404)
     }
     val items = read[Seq[ItemJSON]](jsonItems)
