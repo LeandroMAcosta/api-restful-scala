@@ -28,11 +28,13 @@ class Order(val consumerId: Int,val consumerUsername: String, val consumerLocati
                    "providerStoreName" -> providerStoreName, "orderTotal" -> orderTotal,
                    "status" -> status, "items" -> items)
   
-  def detail: Map [String, Any] = 
+  def noItem: Map [String, Any] = 
     super.toMap + ("consumerId"-> consumerId, "consumerUsername" -> consumerUsername,
                    "consumerLocation" -> consumerLocation, "providerId" -> providerId, 
                    "providerStoreName" -> providerStoreName, "orderTotal" -> orderTotal,
                    "status" -> status )
+  def getItem : Map[String, Any] = 
+    super.toMap + ("items" -> items) 
 
   override def toString: String = s"Order: $id"
   

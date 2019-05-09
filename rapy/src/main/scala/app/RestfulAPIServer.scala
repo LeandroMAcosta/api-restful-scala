@@ -148,9 +148,11 @@ object RestfulAPIServer extends MainRoutes  {
   
   @get("api/orders/detail/:id")
   def ordersDetail(id: Int): Response = {
-    if(!Order.exist(id)){
-
+    val ordersInstance = Order.find(id) match {
+      case Some(s) => s
+      case _ => return JSONResponse("non existing order",404)
     }
+    JSONResponse(ordersInstance.getItem,200)
   }
 
   @get("/api/orders")
