@@ -152,7 +152,7 @@ object RestfulAPIServer extends MainRoutes  {
       case Some(s) => s
       case _ => return JSONResponse("non existing order",404)
     }
-    JSONResponse(ordersInstance.getItem,200)
+    JSONResponse(ordersInstance.detail)
   }
 
   @get("/api/orders")
