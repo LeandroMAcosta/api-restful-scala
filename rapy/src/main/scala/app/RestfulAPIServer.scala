@@ -163,12 +163,17 @@ object RestfulAPIServer extends MainRoutes  {
     JSONResponse(Order.filter(Map("consumerUsername" -> username)).map(order => order.noItem))
   }
 
-  private def validItems(itemsToMap: Seq[Map[String,Any]], itemsProvider: List[Items]): Boolean = {
-    itemsToMap.forall(
+  private def validItems(itemsJSON: Seq[Map[String,Any]], itemsProvider: List[Items]): Boolean = {
+    itemsJSON.forall(
       item => itemsProvider.exists(
         itProvider => itProvider.toMap.get("name") == item.get("name")
       )
     )
+  }
+
+  private def parseJson(json: String) = {
+    val parse = read[List[ItemJSON]](json)
+    parse.map(x => Map("name" -> x.name, "amount" -> x.amount))
   }
 
   @postJson("/api/orders")
@@ -176,31 +181,34 @@ object RestfulAPIServer extends MainRoutes  {
     if (!Provider.exists("username", providerUsername) && !Consumer.exists("username", consumerUsername)) {
       return JSONResponse("non existing consumer/provider/item for provider", 404)
     }
-    val items = read[Seq[ItemJSON]](jsonItems)
-    
     val provider = Provider.filter(Map("username" -> providerUsername)).head
     val consumer = Consumer.filter(Map("username" -> consumerUsername)).head
     val location = Location.find(consumer.locationId).get
-    val itemsToMap = items.map(x => Map("name" -> x.name, "amount" -> x.amount))
+    val itemsJSON = parseJson(jsonItems)
 
     val itemsProvider = Items.filter(Map("providerId" -> provider.id))
 
-    if (!validItems(itemsToMap, itemsProvider)) {
+    if (!validItems(itemsJSON, itemsProvider)) {
       return JSONResponse("non existing consumer/provider/item for provider", 404)
     }
 
     var orderTotal: Float = 0
 
-    itemsToMap.foreach(
+    itemsJSON.foreach(
       item => orderTotal += 
         itemsProvider.find(
           itemProvider => itemProvider.toMap.get("name") == item.get("name")
         ).get.getPrice() * item.get("amount").get.asInstanceOf[Int]
     )
-    //{id: int, name: string, price: float, description: string, providerId: int}]
-    // itemsProvider = itemsProvider.filter(itemP => itemsToMap.exist(it => it.name == itemP.get("name").get))
+   
+    val items = itemsJSON.map(
+      item => Map("id" -> provider.getItem(item.get("name").get.asInstanceOf[String]),
+                  "amount" -> item.get("amount").get.asInstanceOf[Int]
+      ) 
+    )
+
     val order = Order(consumer.id, consumer.username, location.name, provider.id, provider.storeName,
-                      orderTotal, "payed", List(Map("key" -> "valor"))) 
+                      orderTotal, "payed", items) 
 
     order.save()
     JSONResponse(order.id)

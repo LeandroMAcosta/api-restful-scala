@@ -27,4 +27,9 @@ class Provider(username: String, locationId: Int, balance: Int,
           ("storeName" -> storeName, "maxDeliveryDistance" -> maxDeliveryDistance)
 
   override def toString: String = s"Provider: $username"
+
+  def getItem(name: String): Int = {
+    return Items.filter(Map("name" -> name, "providerId" -> id)).head.id
+  }
+
 }
