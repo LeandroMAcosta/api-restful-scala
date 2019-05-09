@@ -151,7 +151,7 @@ object RestfulAPIServer extends MainRoutes  {
     if (!Consumer.exists("username", username)) {
       return JSONResponse("non existing user", 404)
     }
-    JSONResponse(Order.filter(Map("consumerUsername" -> username)).map(order => order.toMap))
+    JSONResponse(Order.filter(Map("consumerUsername" -> username)).map(order => order.detail))
   }
 
   private def validItems(itemsToMap: Seq[Map[String,Any]], itemsProvider: List[Items]): Boolean = {
