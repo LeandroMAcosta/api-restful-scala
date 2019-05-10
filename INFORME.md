@@ -36,9 +36,7 @@ Al principio nosotros optamos porque todos los modelos sean "hijos" de Models in
 
 ![database](diagrams/herencia.png)
 
-Notemos que en nuestro proyecto User no es una clase normal, sino de tipo *case*, ¿A que se refiere esto?, muy simple una *case class* son como las clases normales pero con unas pequeñas diferencias. Son buenas para modelar datos **inmutables** , es decir, que no cambian. También tienen un método por defecto denominado  ``apply()`` que se encarga de la construcción del objeto.
-
-También cabe destacar que Models no es una clase, ni siquiera una clase Abstracta, si no un *trait*. Los  trait's tienen muchas propiedade interesantes, pero la que se destaca por sobre las demas es la herencia múltiple, sin ella por ejemplo no podríamos hacer el proyecto de la forma que lo hicimos, puesto que, si vemos la imagen anterior Consumer y Provider ambos heredan de User y de Models.
+También cabe destacar que ni Models ni User son una clase, ni siquiera una clase Abstracta, si no un *trait*. Los  trait's tienen muchas propiedade interesantes, pero la que se destaca por sobre las demas es la herencia múltiple, sin ella por ejemplo no podríamos hacer el proyecto de la forma que lo hicimos, puesto que, si vemos la imagen anterior Consumer y Provider ambos heredan de User y de Models.
 
 En la programación orientada a objetos, la **Herencia** permite a nuevos objetos obtener las propiedades de objetos ya existentes. Una clase que es usada como la base para herencia se llama "*superclass*" o clase base y una clase que hereda de una clase base se denomina "*subclass*". Si nosotros no pudiesemos hacer esto para poder obtener todas las propiedades de la clase padre tendríamos que copiar todos los métodos y atributos que querramos en nuestra clase hijo, lo que haría que las clases tenga un tamaño grande, ya que, generalmente se le agregan nuevos métodos o atributos.
 
@@ -47,6 +45,9 @@ En la programación orientada a objetos, la **Herencia** permite a nuevos objeto
 La siguiente imagen muestra como se relacionan las bases de datos de los distintos Modelos.
 
 ![database](diagrams/database.png)
+ 
+Cuando trabajamos con la base de datos descubrimos un problema, al ser todos los parametros de nuestros modelos de tipo **val** cuando queríamos modificar por ejemplo el estado de nuestra orden teníamos que crear una nueva instancia de tipo order y copiar los datos de la orden anterior pero con el estado nuevo, pero ¿Cuál es el problema? , cuando creabamos la nueva instancia, dicha instancia iba a tener un nuevo ``ID`` , entonces si queríamos hacer un un GET del ID viejo no ibamos a encontrar la Orden. También esto sucede si queremos cambiar algún dato del Consumer o el Provider como por ejemplo el balance. Para poder solucionarlo tuvimos que declar los parametros que queríamos modificar como **var** para que dejen de ser inmutables. 
+
 
 ## Dificultades 
 
