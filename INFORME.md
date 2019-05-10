@@ -31,7 +31,13 @@ Posee muchas ventajas, entre las que se destacan más es que es un protocolo cli
 ## Nuestro Modelo
 
 ### Herencia 
+
+Al principio nosotros optamos porque todos los modelos sean "hijos" de Models incluyendo a ``User``(Consumer y Provider eran hijos de User) para simplificarnos la vida, sin embargo no tardamos mucho en darnos cuenta que esa no era la forma correcta, ya que, de dicha forma Consumer y Provider compartían la misma base de datos, por lo tanto cuando por ejemplo queríamos buscar un el nombre de un consumidor y por alguna casualidad había un proveedor con el mismo nombre nos iba a devolver el proveedor. Para solucionarlo optamos por el siguiente esquema:
+
 ![database](diagrams/herencia.png)
+
+En la programación orientada a objetos, la **Herencia** permite a nuevos objetos obtener las propiedades de objetos ya existentes. Una clase que es usada como la base para herencia se llama "*superclass*" o clase base y una clase que hereda de una clase base se denomina "*subclass*". Si nosotros no pudiesemos hacer esto para poder obtener todas las propiedades de la clase padre tendríamos que copiar todos los métodos y atributos que querramos en nuestra clase hijo, lo que haría que las clases tenga un tamaño grande, ya que, generalmente se le agregan nuevos métodos o atributos.
+
 
 ### Base de Datos
 ![database](diagrams/database.png)
