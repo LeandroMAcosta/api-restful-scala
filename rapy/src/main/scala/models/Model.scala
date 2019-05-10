@@ -24,6 +24,7 @@ trait ModelCompanion[M <: Model[M]] {
     )
   }
 
+  // Precondicion: M.exist(attr, value) 
   def findByAttribute(attr: String, value: Any): M = {
     return filter(Map(attr -> value)).head
   }

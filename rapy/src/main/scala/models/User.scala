@@ -1,6 +1,6 @@
 package models
 
-trait User{
+trait User {
   val username: String 
   val locationId: Int 
   var balance: Float
@@ -8,4 +8,5 @@ trait User{
   def toMap = Map("username" -> username, 
                   "locationId" -> locationId, 
                   "balance" -> balance)
+
 }
