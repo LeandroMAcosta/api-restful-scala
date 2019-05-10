@@ -32,11 +32,12 @@ http localhost:4000/api/consumers
 
 # http localhost:4000/api/orders providerUsername="lapeti1" consumerUsername="consumidor" items="asdasd"
 echo "Post de orders"
-http POST localhost:4000/api/orders providerUsername="lapeti1" consumerUsername="consumidor" jsonItems:='[{"name":"hamburguesas con papas","amount":2},{"name":"papas fritas","amount":1}]'
+http POST localhost:4000/api/orders providerUsername="lapeti1" consumerUsername="consumidor" items:='[{"name":"hamburguesas con papas","amount":2},{"name":"papas fritas","amount":1}]'
 
-http POST localhost:4000/api/orders providerUsername="lapeti1" consumerUsername="consumidor" jsonItems:='[{"name":"hamburguesas con papas","amount":2},{"name":"papas fritas","amount":1}]'
+http POST localhost:4000/api/orders providerUsername="lapeti3" consumerUsername="consumidor" items:='[{"name":"fideos blancos","amount":4},{"name":"papas fritas","amount":3}]'
 
 # rm ./db/*.json
+http GET localhost:4000/api/orders?username="consumidor"
 
 # chequear balances
 http localhost:4000/api/providers?locationName="guemes"
