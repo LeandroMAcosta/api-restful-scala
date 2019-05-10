@@ -22,17 +22,18 @@ En este laboratorio vamos a implementar una API RESTful para un servicio de deli
 ## ¿Qué es una API REST?
 Una API RESTful, también conocida como servicio web RESTful,se basa en la tecnología de transferencia de estado representacional (**REST**). 
 
-REST es cualquier interfaz entre sistemas que use HTTP para obtener datos o generar operaciones sobre esos datos en todos los formatos posibles como por ejemplo XML (en nuestri caso vamos a trabajar con JSON).
+REST es cualquier interfaz entre sistemas que use HTTP para obtener datos o generar operaciones sobre esos datos en todos los formatos posibles como por ejemplo XML (en nuestro caso vamos a trabajar con JSON).
 
 Posee muchas ventajas, entre las que se destacan más es que es un protocolo cliente/servidor ``sin estados``, cada petición HTTP contiene toda la información necesaria para ejecutarla, por lo tanto ni el cliente ni el servidor necesitan recordar ningún estado para satisfacer dicha petición.
 
->Las operaciones más importantes relacionadas con los datos en cualquier sistema REST son: 
->   * POST (crear)
->   * GET (leer y consultar)
->   * PUT (editar)
->   * DELETE (eliminar).
+>Las operaciones más importantes relacionadas con los datos en cualquier sistema REST son:POST (crear), GET (leer y consultar), PUT (editar) y DELETE (eliminar). En este proyecto sólo utilizamos POST y GET.
 
 ## Nuestro Modelo
+
+### Herencia 
+![database](diagrams/herencia.png)
+
+### Base de Datos
 ![database](diagrams/database.png)
 
 ## Dificultades 
