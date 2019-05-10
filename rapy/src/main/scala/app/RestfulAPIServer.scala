@@ -56,7 +56,9 @@ object RestfulAPIServer extends MainRoutes  {
   def deleteUser(username: String): Response = {
     
     if (Consumer.exists("username", username)) {
-      val instanceUser = Consumer.all.find(consumer => consumer.username == username).get
+      val instanceUser = Consumer.all.find(
+        consumer => consumer.username == username
+      ).get
       Consumer.delete(instanceUser.id)
       return JSONResponse("Ok", 404)
     
@@ -257,7 +259,8 @@ object RestfulAPIServer extends MainRoutes  {
   }
 
   @postJson("/api/items")
-  def items(name: String, description: String, price: Float, providerUsername: String): Response = {
+  def items(name: String, description: String, 
+            price: Float, providerUsername: String): Response = {
     if (!Provider.exists("username", providerUsername)) {
       return JSONResponse("non existing provider", 404)
     }
