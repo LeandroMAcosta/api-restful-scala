@@ -18,10 +18,9 @@ object Provider extends ModelCompanion[Provider] {
 
 }
 
-class Provider(username: String, locationId: Int, balance: Int, 
+class Provider(val username: String, val locationId: Int, var balance: Float, 
                val storeName: String, val maxDeliveryDistance: Int) 
-               extends User(username, locationId, balance) 
-               with Model[Provider] {
+               extends User with Model[Provider] {
 
   protected def dbTable: DatabaseTable[Provider] = Provider.dbTable
 
@@ -37,5 +36,8 @@ class Provider(username: String, locationId: Int, balance: Int,
   def getItem(name: String): Int = {
     return Items.filter(Map("name" -> name, "providerId" -> id)).head.id
   }
-
+  
+  def pay(price: Float) = 
+    balance = balance + price
+  
 }

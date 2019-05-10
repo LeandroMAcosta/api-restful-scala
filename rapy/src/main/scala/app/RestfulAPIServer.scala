@@ -211,6 +211,11 @@ object RestfulAPIServer extends MainRoutes  {
                       orderTotal, "payed", items) 
 
     order.save()
+
+    consumer.charge(orderTotal)
+    provider.pay(orderTotal)
+    consumer.save()
+    provider.save()
     JSONResponse(order.id)
   }
 

@@ -15,10 +15,13 @@ object Consumer extends ModelCompanion[Consumer] {
 
 }
 
-class Consumer(username: String, locationId: Int, balance: Int) 
-               extends User(username, locationId, balance) with Model[Consumer] {
+class Consumer(val username: String, val locationId: Int, var balance: Float) 
+               extends User with Model[Consumer] {
   
   protected def dbTable: DatabaseTable[Consumer] = Consumer.dbTable
+
+  def charge(price: Float) = 
+    balance = balance - price
 
   override def toMap: Map[String, Any] = super.toMap + 
           ("username" -> username, "locationId" -> locationId, "balance" -> balance)
