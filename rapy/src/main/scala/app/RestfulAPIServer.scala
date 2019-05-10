@@ -43,10 +43,10 @@ object RestfulAPIServer extends MainRoutes  {
     JSONResponse(location.id)
   }
 
-  // /*
-  //  *  User routes
-  //  *  - deleteUser (POST)
-  //  */
+  /*
+   *  User routes
+   *  - deleteUser (POST)
+   */
   @post("/api/users/delete/:username")
   def deleteUser(username: String): Response = {
     
@@ -99,7 +99,7 @@ object RestfulAPIServer extends MainRoutes  {
    */
 
   @get("/api/providers")
-  def providers(locationName: String = ""): Response = {
+  def getProviders(locationName: String = ""): Response = {
     if (locationName == "") {
       return JSONResponse(Provider.all.map(provider => provider.toMap))
     }
@@ -171,11 +171,6 @@ object RestfulAPIServer extends MainRoutes  {
       )
     )
   }
-
-  // private def parseJson(json: String) = {
-  //   val parse = read[List[ItemJSON]](json)
-  //   parse.map(x => Map("name" -> x.name, "amount" -> x.amount))
-  // }
 
   @postJson("/api/orders")
   def orders(providerUsername: String, 
@@ -286,13 +281,12 @@ object RestfulAPIServer extends MainRoutes  {
     JSONResponse(providerId, 200)
   }
 
-  @postJson("/api/items/delete")
-  def delete(id: Int): Response = {
+  @post("/api/items/delete/:id")
+  def deleteItem(id: Int): Response = {
     if (Items.exists("id", id)) {
       Items.delete(id)
-      JSONResponse("Ok", 200)
-    }
-    else {
+      JSONResponse("Ok")
+    } else {
       JSONResponse("non existing item", 404)
     }
   }
