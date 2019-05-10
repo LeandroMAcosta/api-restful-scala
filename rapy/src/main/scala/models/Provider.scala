@@ -6,7 +6,7 @@ object Provider extends ModelCompanion[Provider] {
   def apply(username: String, storeName: String, locationId: Int,
             balance: Int, maxDeliveryDistance: Int): Provider = {
               
-    new Provider(username, locationId,balance, storeName, maxDeliveryDistance) 
+    new Provider(username, locationId,balance, storeName, maxDeliveryDistance)
   }
 
   private[models] def apply(jsonValue: JValue): Provider = {
@@ -18,7 +18,7 @@ object Provider extends ModelCompanion[Provider] {
 
 }
 
-class Provider(val username: String, val locationId: Int, var balance: Float, 
+class Provider(val username: String, val locationId: Int, var balance: Float,
                val storeName: String, val maxDeliveryDistance: Int) 
                extends User with Model[Provider] {
 
