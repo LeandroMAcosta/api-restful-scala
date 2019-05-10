@@ -17,12 +17,7 @@
 ## Introducción 
 
 En este laboratorio vamos a implementar una API RESTful para un servicio de delivery, al estilo Rappi, PedidosYA,ifood o Deliveroo. En esta API, los proveedores suben sus productos, que los consumidores pueden ver y seleccionar para incluir en un pedido. Una vez que el pedido está finalizado, la aplicación se encarga de cobrarlo al consumidor, entregarlo y pagarle al proveedor el dinero correspondiente.
-
-1. Encapsulamiento
-2. Herencia, clases abstractas y traits.
-3. Sobrecarga de operadores
-4. Polimorfismo
-
+º
 
 ## ¿Qué es una API REST?
 Una API RESTful, también conocida como servicio web RESTful,se basa en la tecnología de transferencia de estado representacional (**REST**). 
