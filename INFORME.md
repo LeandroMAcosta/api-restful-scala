@@ -6,7 +6,7 @@
 2. ¿Qué es una API RESTful? 
 3. Nuestro Modelo 
 
-    3.1 Herencia
+    3.1 Herencia y Polimorfismo
     
     3.2 Base de Datos
 
@@ -32,7 +32,7 @@ Por último, los objetos en REST siempre se manipulan a partir de la [URI](https
 
 ## Nuestro Modelo
 
-### Herencia 
+### Herencia y Polimorfismo
 
 Al principio nosotros optamos porque todos los modelos sean "hijos" de Models incluyendo a ``User``(Consumer y Provider eran hijos de User) para simplificarnos la vida, sin embargo no tardamos mucho en darnos cuenta que esa no era la forma correcta, ya que, de dicha forma Consumer y Provider compartían la misma base de datos, por lo tanto cuando por ejemplo queríamos buscar un el nombre de un consumidor y por alguna casualidad había un proveedor con el mismo nombre nos iba a devolver el proveedor. Para solucionarlo optamos por el siguiente esquema:
 
@@ -41,6 +41,8 @@ Al principio nosotros optamos porque todos los modelos sean "hijos" de Models in
 También cabe destacar que ni Models ni User son una clase, ni siquiera una clase Abstracta, si no un *trait*. Los  trait's tienen muchas propiedade interesantes, pero la que se destaca por sobre las demas es la herencia múltiple, sin ella por ejemplo no podríamos hacer el proyecto de la forma que lo hicimos, puesto que, si vemos la imagen anterior Consumer y Provider ambos heredan de User y de Models.
 
 En la programación orientada a objetos, la **Herencia** permite a nuevos objetos obtener las propiedades de objetos ya existentes. Una clase que es usada como la base para herencia se llama "*superclass*" o clase base y una clase que hereda de una clase base se denomina "*subclass*". Si nosotros no pudiesemos hacer esto para poder obtener todas las propiedades de la clase padre tendríamos que copiar todos los métodos y atributos que querramos en nuestra clase hijo, lo que haría que las clases tenga un tamaño grande, ya que, generalmente se le agregan nuevos métodos o atributos.
+
+Por último gracias a que Model es un trait polimorfico, es decir, está definido su comportamiento sin necesidad de saber la clase que lo heredarían. Si no pudiesemos hacerlo de esta forma , tendríamos que definir el comportamiento para cada clase (Order , Item , Consumer , etc) entonces tendríamos un trait por cada uno o podríamos implementar las características de Model dentro de dichas clase. De cualquiera de las dos formas tendríamos mucho código repetido que no podríanos simplificar
 
 ### Base de Datos
 
