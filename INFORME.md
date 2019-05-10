@@ -19,7 +19,18 @@ En este laboratorio vamos a implementar una API RESTful para un servicio de deli
 4. Polimorfismo
 
 
-## ¿Qué es una API RESTful? 
+## ¿Qué es una API REST?
+Una API RESTful, también conocida como servicio web RESTful,se basa en la tecnología de transferencia de estado representacional (**REST**). 
+
+REST es cualquier interfaz entre sistemas que use HTTP para obtener datos o generar operaciones sobre esos datos en todos los formatos posibles como por ejemplo XML (en nuestri caso vamos a trabajar con JSON).
+
+Posee muchas ventajas, entre las que se destacan más es que es un protocolo cliente/servidor ``sin estados``, cada petición HTTP contiene toda la información necesaria para ejecutarla, por lo tanto ni el cliente ni el servidor necesitan recordar ningún estado para satisfacer dicha petición.
+
+>Las operaciones más importantes relacionadas con los datos en cualquier sistema REST son: 
+>   * POST (crear)
+>   * GET (leer y consultar)
+>   * PUT (editar)
+>   * DELETE (eliminar).
 
 ## Nuestro Modelo
 ![database](diagrams/database.png)
@@ -32,9 +43,13 @@ Por otro lado fue bastante problemático acostumbrarse a trabajar con ``objetos`
 
 Dejando de lado las dificultades del Lenguaje lo más complicado por diferencia fue entender como funcionaba **Model** , porque nunca instanciabamos dicha clase y muchas cosas más,esa y mil preguntas más tuvimos. Cada una se fue resolviendo de a poco mientras investigabamos los conceptos que necesitabamos saber.
 
+Por último, los objetos en REST siempre se manipulan a partir de la [URI](https://stackoverflow.com/questions/176264/what-is-the-difference-between-a-uri-a-url-and-a-urn). Es la URI y ningún otro elemento el identificador único de cada recurso de ese sistema REST. La URI nos facilita acceder a la información para su modificación o borrado, o, por ejemplo, para compartir su ubicación exacta con terceros.  
+
+
 ## Bibliografía 
 
-
+1. [RESTful API](https://searchmicroservices.techtarget.com/definition/RESTful-API)  y  [Características REST](https://bbvaopen4u.com/es/actualidad/api-rest-que-es-y-cuales-son-sus-ventajas-en-el-desarrollo-de-proyectos)
+2. 
 ## Integrantes 
 * Gonzalo Gigena 
 * Leandro Acosta 
