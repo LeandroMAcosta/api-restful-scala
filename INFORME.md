@@ -28,6 +28,8 @@ Posee muchas ventajas, entre las que se destacan más es que es un protocolo cli
 
 >Las operaciones más importantes relacionadas con los datos en cualquier sistema REST son:POST (crear), GET (leer y consultar), PUT (editar) y DELETE (eliminar). En este proyecto sólo utilizamos POST y GET.
 
+Por último, los objetos en REST siempre se manipulan a partir de la [URI](https://stackoverflow.com/questions/176264/what-is-the-difference-between-a-uri-a-url-and-a-urn). Es la URI y ningún otro elemento el identificador único de cada recurso de ese sistema REST. La URI nos facilita acceder a la información para su modificación o borrado, o, por ejemplo, para compartir su ubicación exacta con terceros.  
+
 ## Nuestro Modelo
 
 ### Herencia 
@@ -59,7 +61,6 @@ Además no fue fácil acostumbrarse a la forma en la que están encapsulados los
 
 Dejando de lado las dificultades del Lenguaje lo más complicado por diferencia fue entender como funcionaba **Model** , porque nunca instanciabamos dicha clase y muchas cosas más,esa y mil preguntas más tuvimos. Cada una se fue resolviendo de a poco mientras investigabamos los conceptos que necesitabamos saber. Después de esto tuvimos un error de diseño (explicado más en profuncidad en "Herencia") donde decidimos que User herede de Models, para solucionarlo no tuvimos que cambiar muchas cosas, pero si lidiamos con muchos errores al compilar.
 
-Por último, los objetos en REST siempre se manipulan a partir de la [URI](https://stackoverflow.com/questions/176264/what-is-the-difference-between-a-uri-a-url-and-a-urn). Es la URI y ningún otro elemento el identificador único de cada recurso de ese sistema REST. La URI nos facilita acceder a la información para su modificación o borrado, o, por ejemplo, para compartir su ubicación exacta con terceros.  
 
 
 ## Bibliografía 
