@@ -118,7 +118,6 @@ object RestfulAPIServer extends MainRoutes  {
   @postJson("/api/providers")
   def providers(username: String, storeName: String, 
                 location: String, maxDeliveryDistance: Int): Response = {
-
     if (!Provider.valid(username, storeName)) {
       return JSONResponse("existing username/storeName", 409)
     } else if (maxDeliveryDistance < 0) {
@@ -164,9 +163,9 @@ object RestfulAPIServer extends MainRoutes  {
     JSONResponse(response)
   }
 
-  private def validItems(itemsJSON: List[ItemJSON], 
+  private def validItems(jsonItems: List[ItemJSON], 
                          itemsProvider: List[Items]): Boolean = {
-    return itemsJSON.forall(
+    return jsonItems.forall(
       item => itemsProvider.exists(
         itProvider => itProvider.toMap.get("name").get == item.name
       )
@@ -181,7 +180,7 @@ object RestfulAPIServer extends MainRoutes  {
   @postJson("/api/orders")
   def orders(providerUsername: String, 
              consumerUsername: String, 
-             jsonItems: List[ItemJSON]): Response = {
+             itemss: List[ItemJSON]): Response = {
     
     if (!Provider.exists("username", providerUsername) && 
         !Consumer.exists("username", consumerUsername)) {
@@ -191,24 +190,24 @@ object RestfulAPIServer extends MainRoutes  {
     val provider = Provider.filter(Map("username" -> providerUsername)).head
     val consumer = Consumer.filter(Map("username" -> consumerUsername)).head
     val location = Location.find(consumer.locationId).get
-    val itemsJSON = jsonItems.toList
+    val jsonItems = itemss.toList
 
     val itemsProvider = Items.filter(Map("providerId" -> provider.id))
 
-    if (!validItems(itemsJSON, itemsProvider)) {
+    if (!validItems(jsonItems, itemsProvider)) {
       return JSONResponse("non existing consumer/provider/item for provider", 404)
     }
 
     var orderTotal: Float = 0
 
-    itemsJSON.foreach(
+    jsonItems.foreach(
       item => orderTotal += 
         itemsProvider.find(
           itemProvider => itemProvider.toMap.get("name") == Some(item.name)
         ).get.getPrice() * item.amount
     )
    
-    val items = itemsJSON.map(
+    val items = jsonItems.map(
       item => 
         Map("id" -> provider.getItem(item.name),
             "amount" -> item.amount
