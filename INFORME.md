@@ -61,13 +61,16 @@ Además no fue fácil acostumbrarse a la forma en la que están encapsulados los
 
 Dejando de lado las dificultades del Lenguaje lo más complicado por diferencia fue entender como funcionaba **Model** , porque nunca instanciabamos dicha clase y muchas cosas más,esa y mil preguntas más tuvimos. Cada una se fue resolviendo de a poco mientras investigabamos los conceptos que necesitabamos saber. Después de esto tuvimos un error de diseño (explicado más en profuncidad en "Herencia") donde decidimos que User herede de Models, para solucionarlo no tuvimos que cambiar muchas cosas, pero si lidiamos con muchos errores al compilar.
 
+Finalmente tuvimos una complicación cunado queríamos implementar el cambio del balance en el Consumidor y el Proveedor cuando se realiza una orden. El problema que teníamos venía de que User era una ``case class`` y a pesar que uno de sus atributos era de tipo var cuando lo modificamos en alguna subclase nos decía que era un valor inmutable.Todo esto se solucionó cambiadolo por un trait.
 
+>Las clases de tipo **case** son como las clases normales, nada más que tienen pequeñas diferencias. Primero que todo este tipo de clases son buenas para modelar datos inmutables, también tienen un método por defecto (apply()) que se encarga de la construcción del objeto.
 
 ## Bibliografía 
 
 1. [RESTful API](https://searchmicroservices.techtarget.com/definition/RESTful-API)  y  [Características REST](https://bbvaopen4u.com/es/actualidad/api-rest-que-es-y-cuales-son-sus-ventajas-en-el-desarrollo-de-proyectos)
 2. [Inheritance](https://www.adobe.com/devnet/actionscript/learning/oop-concepts/inheritance.html)
 3. [Abstract Classes and Traits](https://www.geeksforgeeks.org/difference-between-traits-and-abstract-classes-in-scala/)
+4. [Case Classes](https://docs.scala-lang.org/tour/case-classes.html)
 
 ## Integrantes 
 * Gonzalo Gigena 
