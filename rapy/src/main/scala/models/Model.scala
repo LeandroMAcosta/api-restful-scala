@@ -24,12 +24,8 @@ trait ModelCompanion[M <: Model[M]] {
     )
   }
 
-  def findByAttribute(attr: String, value: Any): Option[M] = {
-    val list = filter(Map(attr -> value))
-    exists(attr, value) match {
-      case false => None
-      case true => Some(list.head)
-    }
+  def findByAttribute(attr: String, value: Any): M = {
+    return filter(Map(attr -> value)).head
   }
 
 }
