@@ -165,9 +165,9 @@ object RestfulAPIServer extends MainRoutes  {
 
   private def validItems(jsonItems: List[ItemJSON], 
                          itemsProvider: List[Items]): Boolean = {
-    return jsonItems.forall(
+    jsonItems.forall(
       item => itemsProvider.exists(
-        itProvider => itProvider.toMap.get("name").get == item.name
+        itProvider => itProvider.name == item.name
       )
     )
   }
@@ -198,7 +198,7 @@ object RestfulAPIServer extends MainRoutes  {
     jsonItems.foreach(
       item => orderTotal += 
         itemsProvider.find(
-          itemProvider => itemProvider.toMap.get("name") == Some(item.name)
+          itemProvider => itemProvider.name == item.name
         ).get.getPrice() * item.amount
     )
    
