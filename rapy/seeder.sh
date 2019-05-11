@@ -34,6 +34,7 @@ http localhost:4000/api/consumers
 echo "Post de orders"
 http POST localhost:4000/api/orders providerUsername="lapeti1" consumerUsername="consumidor" items:='[{"name":"hamburguesas con papas","amount":2},{"name":"papas fritas","amount":1}]'
 
+echo "Este post order tiene que fallar"
 http POST localhost:4000/api/orders providerUsername="lapeti3" consumerUsername="consumidor" items:='[{"name":"fideos blancos","amount":4},{"name":"papas fritas","amount":3}]'
 
 # rm ./db/*.json

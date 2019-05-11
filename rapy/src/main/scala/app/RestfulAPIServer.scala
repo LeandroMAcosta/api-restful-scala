@@ -190,7 +190,7 @@ object RestfulAPIServer extends MainRoutes  {
     val itemsProvider = Items.filter(Map("providerId" -> provider.id))
 
     if (!validItems(jsonItems, itemsProvider)) {
-      return JSONResponse("non existing consumer/providsdsdser/item for provider", 404)
+      return JSONResponse("non existing consumer/provider/item for provider", 404)
     }
 
     var orderTotal: Float = 0
