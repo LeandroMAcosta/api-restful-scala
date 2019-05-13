@@ -116,7 +116,7 @@ object RestfulAPIServer extends MainRoutes  {
     } else if (!Provider.validStoreName(storeName)) {
       return JSONResponse("existing storeName", 409)
     } else if (maxDeliveryDistance < 0) {
-      return JSONResponse("negative maxDeliveryDistance ", 400)
+      return JSONResponse("negative maxDeliveryDistance", 400)
     } else if (!Location.exists("name", locationName)) {
       return JSONResponse("non existing location", 404)
     }
@@ -269,6 +269,9 @@ object RestfulAPIServer extends MainRoutes  {
     }
     if (Items.exists("name", name)) {
       return JSONResponse("existing item for provider", 409)
+    }
+    if (price < 0) {
+      return JSONResponse("negative price", 400)
     }
 
     val providerId = Provider.findByAttribute("username", providerUsername).id
