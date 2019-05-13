@@ -16,9 +16,13 @@ object Provider extends ModelCompanion[Provider] {
     value
   }
 
-  def valid(username: String, storeName: String): Boolean = {
+  def validUsername(username: String): Boolean = {
     return !Provider.exists("username", username) && 
-           !Provider.exists("storeName", storeName)
+           !Consumer.exists("username", username)
+  }
+
+  def validStoreName(storeName: String): Boolean = {
+    !Provider.exists("storeName", storeName)
   }
 
 }

@@ -6,20 +6,13 @@ import scala.collection.script.Location
 import scala.collection.mutable.ListBuffer
 import upickle.default._
 
-import upickle.default.{ReadWriter => RW, macroRW}
-
-case class ItemJSON(name: String, amount: Int)
-object ItemJSON {
-  implicit val rw: RW[ItemJSON] = macroRW
-}
-
 object RestfulAPIServer extends MainRoutes  {
   override def host: String = "0.0.0.0"
   override def port: Int = 4000
 
   @get("/")
   def root(): Response = {  
-    JSONResponse("")
+    JSONResponse("Ok")
   }
 
   /*
@@ -76,15 +69,15 @@ object RestfulAPIServer extends MainRoutes  {
   }
 
   @postJson("/api/consumers")
-  def consumers(username: String, location: String): Response = {
-    if (Consumer.exists("username", username)) {
+  def consumers(username: String, locationName: String): Response = {
+    if (!Consumer.validUsername(username)) {
       return JSONResponse("existing username", 409)
     }
-    if (!Location.exists("name", location)) {
-      return JSONResponse("not existing location", 409)
+    if (!Location.exists("name", locationName)) {
+      return JSONResponse("non existing location", 404)
     }
 
-    val locationInstance = Location.findByAttribute("name", location)
+    val locationInstance = Location.findByAttribute("name", locationName)
 
     val consumer = Consumer(username, locationInstance.id, 0)
     consumer.save()
@@ -104,7 +97,7 @@ object RestfulAPIServer extends MainRoutes  {
       return JSONResponse(Provider.all.map(provider => provider.toMap))
     }
     if (!Location.exists("name", locationName)) {
-      return JSONResponse(Provider.all.map(provider => provider.toMap))      
+      return JSONResponse("non existing location", 404)      
     }
     val locationInstance = Location.findByAttribute("name", locationName)
     val locationId = locationInstance.id
@@ -117,16 +110,18 @@ object RestfulAPIServer extends MainRoutes  {
 
   @postJson("/api/providers")
   def providers(username: String, storeName: String, 
-                location: String, maxDeliveryDistance: Int): Response = {
-    if (!Provider.valid(username, storeName)) {
-      return JSONResponse("existing username/storeName", 409)
+                locationName: String, maxDeliveryDistance: Int): Response = {
+    if (!Provider.validUsername(username)) {
+      return JSONResponse("existing username", 409)
+    } else if (!Provider.validStoreName(storeName)) {
+      return JSONResponse("existing storeName", 409)
     } else if (maxDeliveryDistance < 0) {
       return JSONResponse("negative maxDeliveryDistance ", 400)
-    } else if (!Location.exists("name", location)) {
-      return JSONResponse("non existing location", 409)
+    } else if (!Location.exists("name", locationName)) {
+      return JSONResponse("non existing location", 404)
     }
     
-    val locationInstance = Location.findByAttribute("name", location)    
+    val locationInstance = Location.findByAttribute("name", locationName)    
     val locationId = locationInstance.id
     val provider = Provider(username, storeName, 
                             locationId, 0, maxDeliveryDistance)
@@ -177,10 +172,10 @@ object RestfulAPIServer extends MainRoutes  {
              consumerUsername: String, 
              items: List[ItemJSON]): Response = {
     
-    if (!Provider.exists("username", providerUsername) || 
-        !Consumer.exists("username", consumerUsername)) {
-      
-      return JSONResponse("non existing consumer/provider/item for provider", 404)
+    if (!Provider.exists("username", providerUsername)) {
+      return JSONResponse("non existing provider", 404)
+    } else if (!Consumer.exists("username", consumerUsername)) {
+      return JSONResponse("non existing consumer", 404)
     }
     val provider = Provider.filter(Map("username" -> providerUsername)).head
     val consumer = Consumer.filter(Map("username" -> consumerUsername)).head
@@ -190,7 +185,7 @@ object RestfulAPIServer extends MainRoutes  {
     val itemsProvider = Items.filter(Map("providerId" -> provider.id))
 
     if (!validItems(jsonItems, itemsProvider)) {
-      return JSONResponse("non existing consumer/provider/item for provider", 404)
+      return JSONResponse("non existing item for provider", 404)
     }
 
     var orderTotal: Float = 0
@@ -226,17 +221,17 @@ object RestfulAPIServer extends MainRoutes  {
   def orderDelete(id : Int): Response = {
     val ordersInstance =  Order.find(id) match {
       case Some(s) => s
-      case _ => return JSONResponse("non existing Order", 404)
+      case _ => return JSONResponse("non existing order", 404)
     }
     Order.delete(ordersInstance.id)
-    JSONResponse("OK",200)
+    JSONResponse("Ok", 200)
   }
   
   @post("/api/orders/deliver/:id")
   def orderDeliver(id : Int): Response = {
     var order =  Order.find(id) match {
       case Some(s) => s
-      case _ => return JSONResponse("non existing Order", 404)
+      case _ => return JSONResponse("non existing order", 404)
     }
     order.status = "delivered"
     order.save()

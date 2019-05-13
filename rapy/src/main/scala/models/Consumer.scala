@@ -13,6 +13,11 @@ object Consumer extends ModelCompanion[Consumer] {
     value
   }
 
+  def validUsername(username: String): Boolean = {
+    return !Provider.exists("username", username) && 
+           !Consumer.exists("username", username)
+  }
+
 }
 
 class Consumer(val username: String, val locationId: Int, var balance: Float)

@@ -1,5 +1,11 @@
 package models
 
+import upickle.default.{ReadWriter => RW, macroRW}
+case class ItemJSON(name: String, amount: Int)
+object ItemJSON {
+  implicit val rw: RW[ItemJSON] = macroRW
+}
+
 object Items extends ModelCompanion[Items] {
   protected def dbTable: DatabaseTable[Items] = Database.items
 

@@ -16,6 +16,12 @@ object Order extends ModelCompanion[Order] {
     value.save()
     value
   }
+
+  def validPrices(items: List[Map[String, Any]],
+                  provider: Provider): Boolean = {
+    
+  }
+
  }
 
 class Order(val consumerId: Int,val consumerUsername: String,
