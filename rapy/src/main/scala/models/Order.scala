@@ -38,6 +38,7 @@ class Order(val consumerId: Int,val consumerUsername: String,
 
   override def toMap: Map[String, Any] = noItem + ("items" -> items)
   
+  // Metodos implementados para mantener la encapsulacion.
   def detail = items.map(
     item => Items.find(item.get("id").get).get.toMap + 
             ("amount" -> item.get("amount").get) - "providerId"

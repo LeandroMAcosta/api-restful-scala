@@ -13,6 +13,7 @@ object Consumer extends ModelCompanion[Consumer] {
     value
   }
 
+  // Metodo implementados para mejorar la sintaxis y legibilidad del codigo.
   def validUsername(username: String): Boolean = {
     return !Provider.exists("username", username) && 
            !Consumer.exists("username", username)
@@ -25,6 +26,7 @@ class Consumer(val username: String, val locationId: Int, var balance: Float)
   
   protected def dbTable: DatabaseTable[Consumer] = Consumer.dbTable
 
+  // Actualizacion del balance del consumidor.
   def charge(price: Float) = 
     balance = balance - price
 

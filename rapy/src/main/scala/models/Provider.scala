@@ -16,6 +16,7 @@ object Provider extends ModelCompanion[Provider] {
     value
   }
 
+  // Metodos implementados para mejorar la sintaxis y legibilidad del codigo.
   def validUsername(username: String): Boolean = {
     return !Provider.exists("username", username) && 
            !Consumer.exists("username", username)
@@ -46,6 +47,7 @@ class Provider(val username: String, val locationId: Int, var balance: Float,
     return Items.filter(Map("name" -> name, "providerId" -> id)).head.id
   }
   
+  // Actualizacion del balance del proveedor.
   def pay(price: Float) = 
     balance = balance + price
   

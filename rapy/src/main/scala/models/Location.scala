@@ -23,6 +23,7 @@ class Location(val name: String, val coordX: Int,
 
   override def toString: String = s"Location: $name"
 
+  // Metodos implementados para mantener la encapsulacion.
   def getName() = name
   def getCoordX() = coordX
   def getCoordY() = coordY

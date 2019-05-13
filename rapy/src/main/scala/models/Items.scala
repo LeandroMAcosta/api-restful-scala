@@ -1,6 +1,8 @@
 package models
 
 import upickle.default.{ReadWriter => RW, macroRW}
+// case class utilizada para parsear lista de items recibida en 
+// POST /api/orders
 case class ItemJSON(name: String, amount: Int)
 object ItemJSON {
   implicit val rw: RW[ItemJSON] = macroRW

@@ -9,9 +9,4 @@ trait User {
                   "locationId" -> locationId, 
                   "balance" -> balance)
 
-  def validUsername(username: String): Boolean = {
-    return !Provider.exists("username", username) && 
-           !Consumer.exists("username", username)
-  }
-
 }
