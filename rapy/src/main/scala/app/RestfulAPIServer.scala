@@ -248,6 +248,9 @@ object RestfulAPIServer extends MainRoutes  {
   
   @get("/api/items")
   def items(providerUsername: String = ""): Response = {
+    // En caso de no recibir parametro, providerUsername toma su valor por
+    // defecto listando todo item. Caso contrario valida que sea un proveedor
+    // valido y lista todos sus items disponibles.
     if (providerUsername == "") {
       return JSONResponse(Items.all.map(item => item.toMap))
     }
@@ -264,6 +267,8 @@ object RestfulAPIServer extends MainRoutes  {
   @postJson("/api/items")
   def items(name: String, description: String, 
             price: Float, providerUsername: String): Response = {
+    // Chequeo de datos validos (existencia del proveedor, del item y precio
+    // positivo) con sus correspondientes errores como respuesta.
     if (!Provider.exists("username", providerUsername)) {
       return JSONResponse("non existing provider", 404)
     }
@@ -274,6 +279,7 @@ object RestfulAPIServer extends MainRoutes  {
       return JSONResponse("negative price", 400)
     }
 
+    // Se obtiene el id del proveedor, se crea el item y se guarda.
     val providerId = Provider.findByAttribute("username", providerUsername).id
     val item = Items(name, price, description, providerId)
     item.save()
@@ -282,6 +288,8 @@ object RestfulAPIServer extends MainRoutes  {
 
   @post("/api/items/delete/:id")
   def deleteItem(id: Int): Response = {
+    // Se chequea la existencia del item con el id recibido y se procede a 
+    // eliminarlo. Caso contrario se envia el error correspondiente.
     if (Items.exists("id", id)) {
       Items.delete(id)
       JSONResponse("Ok")
