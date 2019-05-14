@@ -42,7 +42,8 @@ object RestfulAPIServer extends MainRoutes  {
    */
   @post("/api/users/delete/:username")
   def deleteUser(username: String): Response = {
-    
+    // Se chequea la existencia del usuario, se lo instancia y se procede 
+    // a eliminarlo. En caso de no existir se envia el error correspondiente.
     if (Consumer.exists("username", username)) {
       val instanceUser = Consumer.findByAttribute("username", username)
       Consumer.delete(instanceUser.id)
@@ -70,6 +71,7 @@ object RestfulAPIServer extends MainRoutes  {
 
   @postJson("/api/consumers")
   def consumers(username: String, locationName: String): Response = {
+    // Chequeo de parametros validos.
     if (!Consumer.validUsername(username)) {
       return JSONResponse("existing username", 409)
     }
@@ -77,8 +79,10 @@ object RestfulAPIServer extends MainRoutes  {
       return JSONResponse("non existing location", 404)
     }
 
+    // Se obtiene la instancia de la locacion para ser asociada al usuario.
     val locationInstance = Location.findByAttribute("name", locationName)
 
+    // Crea el nuevo consumidor, se guarda y envia el mensaje correspondiente.
     val consumer = Consumer(username, locationInstance.id, 0)
     consumer.save()
     JSONResponse(consumer.id)
@@ -93,14 +97,18 @@ object RestfulAPIServer extends MainRoutes  {
 
   @get("/api/providers")
   def getProviders(locationName: String = ""): Response = {
+    // De no recibir parametro, locationName mantiene su valor por defecto,
+    // lo cual hace listar y enviar todos los proveedores.
     if (locationName == "") {
       return JSONResponse(Provider.all.map(provider => provider.toMap))
     }
     if (!Location.exists("name", locationName)) {
       return JSONResponse("non existing location", 404)      
     }
-    val locationInstance = Location.findByAttribute("name", locationName)
-    val locationId = locationInstance.id
+
+    // Se obtiene el id de la locacion, utilizada para filtrar a los 
+    // proveedores que esten asociados a ella. Se los lista y se envian.
+    val locationId = Location.findByAttribute("name", locationName).id
     
     val response = Provider.filter(
       Map("locationId" -> locationId)).map(provider => provider.toMap
@@ -111,6 +119,7 @@ object RestfulAPIServer extends MainRoutes  {
   @postJson("/api/providers")
   def providers(username: String, storeName: String, 
                 locationName: String, maxDeliveryDistance: Int): Response = {
+    // Chequeo de parametros validos, se envia el mensaje de error segun corresponda.
     if (!Provider.validUsername(username)) {
       return JSONResponse("existing username", 409)
     } else if (!Provider.validStoreName(storeName)) {
@@ -121,8 +130,9 @@ object RestfulAPIServer extends MainRoutes  {
       return JSONResponse("non existing location", 404)
     }
     
-    val locationInstance = Location.findByAttribute("name", locationName)    
-    val locationId = locationInstance.id
+    // Se obtiene el id de la locacion para asociarla al proveedor, se crea
+    // la instancia con los parametros recibidos y se guarda.
+    val locationId = Location.findByAttribute("name", locationName).id
     val provider = Provider(username, storeName, 
                             locationId, 0, maxDeliveryDistance)
     provider.save()
