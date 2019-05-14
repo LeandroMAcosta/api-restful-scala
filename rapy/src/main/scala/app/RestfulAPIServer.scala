@@ -148,6 +148,8 @@ object RestfulAPIServer extends MainRoutes  {
   
   @get("api/orders/detail/:id")
   def ordersDetail(id: Int): Response = {
+    // Busca la orden dada por su id. En caso de existir se la instancia y se
+    // envia. Caso contrario envia el error correspondiente.
     val ordersInstance = Order.find(id) match {
       case Some(s) => s
       case _ => return JSONResponse("non existing order",404)
@@ -159,6 +161,10 @@ object RestfulAPIServer extends MainRoutes  {
 
   @get("/api/orders")
   def orders(username: String): Response = {
+    // Nuestra implementacion retorna las ordenes hechas por un consumidor.
+    // Chequea que exista el consumidor, filtra entre todas las ordenes las
+    // que fueron hechas por dicho usuario y las envia. Caso contrario envia
+    // el error correspondiente.
     if (!Consumer.exists("username", username)) {
       return JSONResponse("non existing user", 404)
     }
@@ -168,6 +174,9 @@ object RestfulAPIServer extends MainRoutes  {
     JSONResponse(response)
   }
 
+  // Metodo utilizado en la siguiente implementacion para mejorar la 
+  // legibilidad del codigo. Verifica que el conjunto de items dados 
+  // pertenezcan al conjunto de items del proveedor.
   private def validItems(jsonItems: List[ItemJSON], 
                          itemsProvider: List[Items]): Boolean = {
     jsonItems.forall(
@@ -181,12 +190,13 @@ object RestfulAPIServer extends MainRoutes  {
   def orders(providerUsername: String, 
              consumerUsername: String, 
              items: List[ItemJSON]): Response = {
-    
+    // Chequeo de parametros validos.
     if (!Provider.exists("username", providerUsername)) {
       return JSONResponse("non existing provider", 404)
     } else if (!Consumer.exists("username", consumerUsername)) {
       return JSONResponse("non existing consumer", 404)
     }
+    // Se instancian los objetos que serán utilizados para crear la orden.
     val provider = Provider.filter(Map("username" -> providerUsername)).head
     val consumer = Consumer.filter(Map("username" -> consumerUsername)).head
     val location = Location.find(consumer.locationId).get
@@ -194,10 +204,12 @@ object RestfulAPIServer extends MainRoutes  {
 
     val itemsProvider = Items.filter(Map("providerId" -> provider.id))
 
+    //Se chequea que los items solicitados esten disponibles por el proveedor.
     if (!validItems(jsonItems, itemsProvider)) {
       return JSONResponse("non existing item for provider", 404)
     }
 
+    // Se calcula el precio total de la orden.
     var orderTotal: Float = 0
 
     jsonItems.foreach(
@@ -207,6 +219,8 @@ object RestfulAPIServer extends MainRoutes  {
         ).get.getPrice() * item.amount
     )
    
+    // Se arma una lista de pares (id, cantidad) de los items para poder 
+    // detallar la orden cuando sea solicitado. 
     val returnItems = jsonItems.map(
       item => 
         Map("id" -> provider.getItem(item.name),
@@ -214,6 +228,8 @@ object RestfulAPIServer extends MainRoutes  {
         ) 
     )
 
+    // Se crea la orden, se actualizan los balances de proveedor y consumidor,
+    // y se guardan. Luego se envia la respuesta correspondiente.
     val order = Order(consumer.id, consumer.username, location.name, 
                       provider.id, provider.storeName, 
                       orderTotal, "payed", returnItems) 
@@ -229,16 +245,20 @@ object RestfulAPIServer extends MainRoutes  {
 
   @post("/api/orders/delete/:id")
   def orderDelete(id : Int): Response = {
+    // En caso de existir la orden dada se elimina, caso contrario
+    // envia el error correspondiente.
     val ordersInstance =  Order.find(id) match {
       case Some(s) => s
       case _ => return JSONResponse("non existing order", 404)
     }
     Order.delete(ordersInstance.id)
-    JSONResponse("Ok", 200)
+    JSONResponse("Ok")
   }
   
   @post("/api/orders/deliver/:id")
   def orderDeliver(id : Int): Response = {
+    // En caso de existir la orden dada, se la marca como enviada.
+    // caso contrario envia el error correspondiente.
     var order =  Order.find(id) match {
       case Some(s) => s
       case _ => return JSONResponse("non existing order", 404)
@@ -246,7 +266,7 @@ object RestfulAPIServer extends MainRoutes  {
     order.status = "delivered"
     order.save()
 
-    JSONResponse("Ok",200)  
+    JSONResponse("Ok")  
   }
   
   /*
