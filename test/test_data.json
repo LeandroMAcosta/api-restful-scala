@@ -1,0 +1,475 @@
+{
+  "list": [
+    {
+      "type": "POST",
+      "url": "/api/locations",
+      "res_code": 200,
+      "res_text": "",
+      "args": {
+        "name": "OneBar",
+        "coordX": 100,
+        "coordY": 200
+      }
+    },
+    {
+      "type": "POST",
+      "url": "/api/locations",
+      "res_code": 409,
+      "res_text": "existing location name",
+      "args": {
+        "name": "OneBar",
+        "coordX": 0,
+        "coordY": 0
+      }
+    },
+    {
+      "type": "POST",
+      "url": "/api/providers",
+      "res_code": 200,
+      "res_text": "",
+      "args": {
+        "username": "Gaston", 
+        "storeName": "MiStore", 
+        "locationName": "OneBar", 
+        "maxDeliveryDistance": 10
+      }
+    }, 
+    {
+      "type": "POST",
+      "url": "/api/consumers",
+      "res_code": 200,
+      "res_text": "",
+      "args": {
+        "username": "Mati",
+        "locationName": "OneBar"
+      }
+    },           
+    {
+      "type": "POST",
+      "url": "/api/providers",
+      "res_code": 409,
+      "res_text": "existing username",
+      "args": {
+        "username": "Mati", 
+        "storeName": "MitiStore", 
+        "locationName": "OneBar", 
+        "maxDeliveryDistance": 10
+      }
+    }, 
+    {
+     "type": "POST",
+      "url": "/api/providers",
+      "res_code": 409,
+      "res_text": "existing username",
+      "args": {
+        "username": "Gaston", 
+        "storeName": "MiStore1", 
+        "locationName": "OneBar", 
+        "maxDeliveryDistance": 10
+      }
+    },
+    {
+     "type": "POST",
+      "url": "/api/providers",
+      "res_code": 409,
+      "res_text": "existing storeName",
+      "args": {
+        "username": "Gaston2", 
+        "storeName": "MiStore", 
+        "locationName": "OneBar", 
+        "maxDeliveryDistance": 10
+      }
+    },
+    {
+     "type": "POST",
+      "url": "/api/providers",
+      "res_code": 404,
+      "res_text": "non existing location",
+      "args": {
+        "username": "Gaston4", 
+        "storeName": "MiStore4", 
+        "locationName": "One", 
+        "maxDeliveryDistance": 10
+      }
+    },
+    {
+     "type": "POST",
+      "url": "/api/providers",
+      "res_code": 400,
+      "res_text": "negative maxDeliveryDistance",
+      "args": {
+        "username": "Gaston6", 
+        "storeName": "MiStore6", 
+        "locationName": "OneBar", 
+        "maxDeliveryDistance": -10
+      }
+    },
+    {
+      "type": "POST",
+      "url": "/api/consumers",
+      "res_code": 409,
+      "res_text": "existing username",
+      "args": {
+        "username": "Mati",
+        "locationName": "OneBar"
+      }
+    }, 
+    {
+      "type": "POST",
+      "url": "/api/consumers",
+      "res_code": 409,
+      "res_text": "existing username",
+      "args": {
+        "username": "Gaston",
+        "locationName": "OneBar"
+      }
+    }, 
+    {
+      "type": "POST",
+      "url": "/api/consumers",
+      "res_code": 404,
+      "res_text": "non existing location",
+      "args": {
+        "username": "Mati2",
+        "locationName": "One"
+      }
+    }, 
+    {
+      "type": "POST",
+      "url": "/api/consumers",
+      "res_code": 200,
+      "res_text": "",
+      "args": {
+        "username": "Cborrar",
+        "locationName": "OneBar"
+      }
+    },
+    {
+      "type": "POST",
+      "url": "/api/providers",
+      "res_code": 200,
+      "res_text": "",
+      "args": {
+        "username": "Pborrar", 
+        "storeName": "NoImporta", 
+        "locationName": "OneBar", 
+        "maxDeliveryDistance": 10
+      }
+    },
+    {
+      "type": "POST",
+      "url": "/api/users/delete/Pborrar",
+      "res_code": 200,
+      "res_text": "Ok",
+      "args": {}
+    },
+    {
+      "type": "POST",
+      "url": "/api/users/delete/Cborrar",
+      "res_code": 200,
+      "res_text": "Ok",
+      "args": {}
+    },
+    {
+      "type": "POST",
+      "url": "/api/users/delete/noexiste",
+      "res_code": 404,
+      "res_text": "non existing user",
+      "args": {}
+    },
+    {
+      "type": "POST",
+      "url": "/api/items",
+      "res_code": 200,
+      "res_text": "",
+      "args": {
+        "name": "Hamburguesa", 
+        "description": "Ta buena", 
+        "price": 10.5, 
+        "providerUsername": "Gaston"      
+      }
+    },
+    {
+      "type": "POST",
+      "url": "/api/items",
+      "res_code": 400,
+      "res_text": "negative price",
+      "args": {
+        "name": "NEgatric", 
+        "description": "Ta buena", 
+        "price": -10.5, 
+        "providerUsername": "Gaston"      
+      }
+    },
+    {
+      "type": "POST",
+      "url": "/api/items",
+      "res_code": 404,
+      "res_text": "non existing provider",
+      "args": {
+        "name": "Hambu", 
+        "description": "Ta buena", 
+        "price": 10.5, 
+        "providerUsername": "NoExiste"      
+      }
+    },
+    {
+      "type": "POST",
+      "url": "/api/items",
+      "res_code": 409,
+      "res_text": "existing item for provider",
+      "args": {
+        "name": "Hamburguesa", 
+        "description": "Ta buena", 
+        "price": 10.5, 
+        "providerUsername": "Gaston"      
+      }
+    },
+    {
+      "type": "POST",
+      "url": "/api/items",
+      "res_code": 200,
+      "res_text": "",
+      "args": {
+        "name": "Iborrar", 
+        "description": "Ta buena", 
+        "price": 10.5, 
+        "providerUsername": "Gaston"      
+      }
+    },   
+    {
+      "type": "POST",
+      "url": "/api/items/delete/2",
+      "res_code": 200,
+      "res_text": "Ok",
+      "args": {}
+    },   
+    {
+      "type": "POST",
+      "url": "/api/items/delete/2",
+      "res_code": 404,
+      "res_text": "non existing item",
+      "args": {}
+    },
+    {
+      "type": "POST",
+      "url": "/api/orders",
+      "res_code": 200,
+      "res_text": "",
+      "args": {
+        "providerUsername": "Gaston",
+        "consumerUsername": "Mati",
+        "items": [
+          {
+            "name": "Hamburguesa", 
+            "amount": 100
+          }           
+        ]
+      }
+    },
+    {
+      "type": "POST",
+      "url": "/api/orders",
+      "res_code": 404,
+      "res_text": "non existing consumer",
+      "args": {
+        "providerUsername": "Gaston",
+        "consumerUsername": "NoExiste",
+        "items": [
+          {
+            "name": "Hamburguesa", 
+            "amount": 100
+          }           
+        ]
+      }
+    },
+    {
+      "type": "POST",
+      "url": "/api/orders",
+      "res_code": 404,
+      "res_text": "non existing provider",
+      "args": {
+        "providerUsername": "NoExiste",
+        "consumerUsername": "Mati",
+        "items": [
+          {
+            "name": "Hamburguesa", 
+            "amount": 100
+          }           
+        ]
+      }
+    },
+    {
+      "type": "POST",
+      "url": "/api/orders",
+      "res_code": 404,
+      "res_text": "non existing item for provider",
+      "args": {
+        "providerUsername": "Gaston",
+        "consumerUsername": "Mati",
+        "items": [
+          {
+            "name": "NoExiste", 
+            "amount": 100
+          }           
+        ]
+      }
+    },    
+    {
+      "type": "POST",
+      "url": "/api/orders/deliver/1",
+      "res_code": 200,
+      "res_text": "Ok",
+      "args": {}
+    },
+    {
+      "type": "POST",
+      "url": "/api/orders/deliver/2",
+      "res_code": 404,
+      "res_text": "non existing order",
+      "args": {}
+    },     
+    {
+      "type": "POST",
+      "url": "/api/orders/delete/1",
+      "res_code": 200,
+      "res_text": "Ok",
+      "args": {}
+    },    
+    {
+      "type": "POST",
+      "url": "/api/orders/delete/1",
+      "res_code": 404,
+      "res_text": "non existing order",
+      "args": {}
+    },    
+    {
+      "type": "POST",
+      "url": "/api/orders",
+      "res_code": 200,
+      "res_text": "",
+      "args": {
+        "providerUsername": "Gaston",
+        "consumerUsername": "Mati",
+        "items": [
+          {
+            "name": "Hamburguesa", 
+            "amount": 100
+          }           
+        ]
+      }
+    },
+    {
+      "type": "GET",
+      "url": "/",
+      "res_code": 200,
+      "res_text": "Ok",
+      "args": {}
+    },
+    {
+      "type": "GET",
+      "url": "/api/providers",
+      "res_code": 200,
+      "res_text": "",
+      "args": {}
+    },
+    {
+      "type": "GET",
+      "url": "/api/consumers",
+      "res_code": 200,
+      "res_text": "",
+      "args": {}
+    },
+    {
+      "type": "GET",
+      "url": "/api/locations",
+      "res_code": 200,
+      "res_text": "",
+      "args": {}
+    },
+    {
+      "type": "GET",
+      "url": "/api/items",
+      "res_code": 200,
+      "res_text": "",
+      "args": {}
+    },
+    {
+      "type": "GET",
+      "url": "/api/providers",
+      "res_code": 200,
+      "res_text": "",
+      "args": {
+        "locationName": "OneBar"
+      }
+    },
+    {
+      "type": "GET",
+      "url": "/api/items",
+      "res_code": 200,
+      "res_text": "",
+      "args": {
+        "providerUsername": "Gaston"
+      }
+    },
+    {
+      "type": "GET",
+      "url": "/api/items",
+      "res_code": 404,
+      "res_text": "non existing provider",
+      "args": {
+        "providerUsername": "NoExiste"
+      }
+    }, 
+    {
+      "type": "GET",
+      "url": "/api/providers",
+      "res_code": 404,
+      "res_text": "non existing location",
+      "args": {
+        "locationName": "NoExiste"
+      }
+    },
+    {
+      "type": "GET",
+      "url": "/api/orders",
+      "res_code": 200,
+      "res_text": "",
+      "args": {
+        "username": "Gaston"
+      }
+    },
+    {
+      "type": "GET",
+      "url": "/api/orders",
+      "res_code": 200,
+      "res_text": "",
+      "args": {
+        "username": "Mati"
+      }
+    },
+    {
+      "type": "GET",
+      "url": "/api/orders",
+      "res_code": 404,
+      "res_text": "non existing user",
+      "args": {
+        "username": "NoExiste"
+      }
+    },
+    {
+      "type": "GET",
+      "url": "/api/orders/detail/1",
+      "res_code": 200,
+      "res_text": "",
+      "args": {}
+    },  
+    {
+      "type": "GET",
+      "url": "/api/orders/detail/1000",
+      "res_code": 404,
+      "res_text": "non existing order",
+      "args": {}
+    }
+  ]
+}
